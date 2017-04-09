@@ -1,0 +1,11 @@
+# This file contains additional pkgconfig build requirements that did
+# not get picked up automatically. One name per line, no whitespace.
+grilo-0.3
+libgtop-2.0
+libsoup-2.4
+colord-gtk
+ice
+smbclient
+accountsservice
+ibus-1.0
+pwquality
