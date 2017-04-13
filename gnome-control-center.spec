@@ -4,7 +4,7 @@
 #
 Name     : gnome-control-center
 Version  : 3.24.1
-Release  : 2
+Release  : 3
 URL      : https://download.gnome.org/sources/gnome-control-center/3.24/gnome-control-center-3.24.1.tar.xz
 Source0  : https://download.gnome.org/sources/gnome-control-center/3.24/gnome-control-center-3.24.1.tar.xz
 Summary  : Keybindings configuration for GNOME applications
@@ -32,6 +32,7 @@ BuildRequires : pkgconfig(gdk-pixbuf-2.0)
 BuildRequires : pkgconfig(gdk-wayland-3.0)
 BuildRequires : pkgconfig(glib-2.0)
 BuildRequires : pkgconfig(gmodule-2.0)
+BuildRequires : pkgconfig(gnome-bluetooth-1.0)
 BuildRequires : pkgconfig(gnome-desktop-3.0)
 BuildRequires : pkgconfig(gnome-settings-daemon)
 BuildRequires : pkgconfig(goa-1.0)
@@ -106,12 +107,12 @@ locales components for the gnome-control-center package.
 
 %build
 export LANG=C
-export SOURCE_DATE_EPOCH=1492029613
+export SOURCE_DATE_EPOCH=1492048037
 %configure --disable-static --without-cheese --disable-update-mimedb --disable-documentation
 make V=1  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1492029613
+export SOURCE_DATE_EPOCH=1492048037
 rm -rf %{buildroot}
 %make_install
 %find_lang gnome-control-center-2.0
@@ -130,6 +131,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 /usr/share/appdata/gnome-control-center.appdata.xml
 /usr/share/applications/gnome-background-panel.desktop
+/usr/share/applications/gnome-bluetooth-panel.desktop
 /usr/share/applications/gnome-color-panel.desktop
 /usr/share/applications/gnome-control-center.desktop
 /usr/share/applications/gnome-datetime-panel.desktop
