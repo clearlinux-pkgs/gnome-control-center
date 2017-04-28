@@ -29,6 +29,8 @@ libgudev-1.0.so.0
 libibus-1.0.so.5
 libkrb5.so.3
 libm.so.6
+libnm.so.0
+libnma.so.0
 libpango-1.0.so.0
 libpangocairo-1.0.so.0
 libpolkit-gobject-1.so.0

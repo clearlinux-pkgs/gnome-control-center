@@ -4,7 +4,7 @@
 #
 Name     : gnome-control-center
 Version  : 3.24.1
-Release  : 3
+Release  : 4
 URL      : https://download.gnome.org/sources/gnome-control-center/3.24/gnome-control-center-3.24.1.tar.xz
 Source0  : https://download.gnome.org/sources/gnome-control-center/3.24/gnome-control-center-3.24.1.tar.xz
 Summary  : Keybindings configuration for GNOME applications
@@ -13,16 +13,23 @@ License  : GPL-2.0 MIT
 Requires: gnome-control-center-bin
 Requires: gnome-control-center-data
 Requires: gnome-control-center-locales
+BuildRequires : automake
+BuildRequires : automake-dev
 BuildRequires : colord-gtk-dev
 BuildRequires : cups-dev
 BuildRequires : docbook-xml
 BuildRequires : e2fsprogs-dev
 BuildRequires : gettext
+BuildRequires : gettext-bin
 BuildRequires : intltool
 BuildRequires : krb5-dev
 BuildRequires : libgtop-dev
+BuildRequires : libtool
+BuildRequires : libtool-dev
 BuildRequires : libxslt-bin
+BuildRequires : m4
 BuildRequires : perl(XML::Parser)
+BuildRequires : pkg-config-dev
 BuildRequires : pkgconfig(accountsservice)
 BuildRequires : pkgconfig(cairo-gobject)
 BuildRequires : pkgconfig(colord)
@@ -44,6 +51,9 @@ BuildRequires : pkgconfig(ibus-1.0)
 BuildRequires : pkgconfig(ice)
 BuildRequires : pkgconfig(libcanberra-gtk3)
 BuildRequires : pkgconfig(libgtop-2.0)
+BuildRequires : pkgconfig(libnm)
+BuildRequires : pkgconfig(libnm-glib)
+BuildRequires : pkgconfig(libnm-gtk)
 BuildRequires : pkgconfig(libpulse)
 BuildRequires : pkgconfig(libpulse-mainloop-glib)
 BuildRequires : pkgconfig(libsoup-2.4)
@@ -56,7 +66,7 @@ BuildRequires : pkgconfig(x11)
 BuildRequires : pkgconfig(xi)
 BuildRequires : sed
 BuildRequires : shared-mime-info
-Patch1: build.patch
+Patch1: 0001-Remove-support-for-Modem-manager.patch
 
 %description
 GNOME Control Center
@@ -106,13 +116,16 @@ locales components for the gnome-control-center package.
 %patch1 -p1
 
 %build
+export http_proxy=http://127.0.0.1:9/
+export https_proxy=http://127.0.0.1:9/
+export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1492048037
-%configure --disable-static --without-cheese --disable-update-mimedb --disable-documentation
+export SOURCE_DATE_EPOCH=1493399925
+%reconfigure --disable-static --without-cheese --disable-update-mimedb --disable-documentation
 make V=1  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1492048037
+export SOURCE_DATE_EPOCH=1493399925
 rm -rf %{buildroot}
 %make_install
 %find_lang gnome-control-center-2.0
@@ -139,6 +152,7 @@ rm -rf %{buildroot}
 /usr/share/applications/gnome-info-panel.desktop
 /usr/share/applications/gnome-keyboard-panel.desktop
 /usr/share/applications/gnome-mouse-panel.desktop
+/usr/share/applications/gnome-network-panel.desktop
 /usr/share/applications/gnome-notifications-panel.desktop
 /usr/share/applications/gnome-online-accounts-panel.desktop
 /usr/share/applications/gnome-power-panel.desktop
