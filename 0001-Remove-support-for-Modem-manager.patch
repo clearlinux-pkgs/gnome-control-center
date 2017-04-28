@@ -1,0 +1,213 @@
+From fc1bc55c9c45a14f9a6be69b75b06ffa054b9c71 Mon Sep 17 00:00:00 2001
+From: Ikey Doherty <michael.i.doherty@intel.com>
+Date: Fri, 28 Apr 2017 18:06:28 +0100
+Subject: [PATCH] Remove support for Modem manager
+
+Clear Linux doesn't support Modem Manager, and only uses Network Manager
+at present for wifi support.
+
+This change also fixes some non Linux-specific functions to ensure the
+reconfigure can take.
+
+Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
+---
+ configure.ac                      | 31 +++--------------------
+ panels/network/Makefile.am        |  2 --
+ panels/network/cc-network-panel.c | 52 ++-------------------------------------
+ 3 files changed, 6 insertions(+), 79 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 0828362..5e1132f 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -10,9 +10,6 @@ AM_INIT_AUTOMAKE([1.11.2 no-dist-gzip dist-xz tar-ustar check-news subdir-object
+ AM_MAINTAINER_MODE([enable])
+ m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
+ 
+-GNOME_DEBUG_CHECK
+-GNOME_COMPILE_WARNINGS([maximum])
+-
+ # Check for programs
+ AC_PROG_CC
+ AM_PROG_CC_C_O
+@@ -95,7 +92,6 @@ POLKIT_REQUIRED_VERSION=0.103
+ GSD_REQUIRED_VERSION=3.23.90
+ NETWORK_MANAGER_REQUIRED_VERSION=1.2.0
+ NETWORK_MANAGER_APPLET_REQUIRED_VERSION=1.2.0
+-MODEM_MANAGER_REQUIRED_VERSION=0.7
+ LIBNOTIFY_REQUIRED_VERSION=0.7.3
+ GNOME_DESKTOP_REQUIRED_VERSION=3.21.2
+ SCHEMAS_REQUIRED_VERSION=3.21.4
+@@ -206,31 +202,12 @@ linux_error_or_warn()
+ 
+ }
+ 
+-# Panels that must be built on Linux systems with
+-# USB support (so not on S390)
+-linux_usb_error_or_warn()
+-{
+-	case $host_os in
+-	linux*)
+-		if test "$host_cpu" = s390 -o "$host_cpu" = s390x; then
+-			AC_MSG_WARN([$1 (no USB support on this platform) ***])
+-		else
+-			AC_MSG_ERROR([$1 ***])
+-		fi
+-		;;
+-	*)
+-		AC_MSG_NOTICE([$1])
+-		;;
+-	esac
+-}
+-
+ PKG_CHECK_MODULES(NETWORK_MANAGER,
+                   libnm >= $NETWORK_MANAGER_REQUIRED_VERSION
+-                  libnma >= $NETWORK_MANAGER_APPLET_REQUIRED_VERSION
+-                  mm-glib >= $MODEM_MANAGER_REQUIRED_VERSION,
++                  libnma >= $NETWORK_MANAGER_APPLET_REQUIRED_VERSION,
+                   [have_networkmanager=yes], have_networkmanager=no)
+ if test "x$have_networkmanager" = xno ; then
+-        linux_error_or_warn "*** Network panel will not be built (NetworkManager or ModemManager not found) ***"
++        linux_error_or_warn "*** Network panel will not be built (NetworkManager not found) ***"
+ else
+ 	AC_DEFINE(BUILD_NETWORK, 1, [Define to 1 to build the Network panel])
+ fi
+@@ -259,7 +236,7 @@ PKG_CHECK_MODULES(BLUETOOTH, $COMMON_MODULES gnome-bluetooth-1.0 >= 3.18.2,
+ if test "x$have_bluetooth" = xyes ; then
+ 	AC_DEFINE(BUILD_BLUETOOTH, 1, [Define to 1 to build the Bluetooth panel])
+ else
+-	linux_usb_error_or_warn "*** Bluetooth panel will not be built"
++	echo "*** Bluetooth panel will not be built"
+ fi
+ AM_CONDITIONAL(BUILD_BLUETOOTH, [test x$have_bluetooth = xyes])
+ if test x${have_bluetooth} = xyes; then
+@@ -331,7 +308,7 @@ if test "x$have_wacom" = xyes ; then
+ 	AC_DEFINE(BUILD_WACOM, 1, [Define to 1 to build the Wacom panel])
+ 	AC_DEFINE(HAVE_WACOM, 1, [Define to 1 is Wacom is supportted])
+ else
+-	linux_usb_error_or_warn "*** Wacom panel will not be built"
++	echo "*** Wacom panel will not be built"
+ fi
+ AM_CONDITIONAL(BUILD_WACOM, [test x${have_wacom} = xyes])
+ 
+diff --git a/panels/network/Makefile.am b/panels/network/Makefile.am
+index ed206d7..e09e809 100644
+--- a/panels/network/Makefile.am
++++ b/panels/network/Makefile.am
+@@ -30,8 +30,6 @@ libnetwork_la_SOURCES =					\
+ 	net-device-simple.h				\
+ 	net-device-ethernet.c				\
+ 	net-device-ethernet.h				\
+-	net-device-mobile.c				\
+-	net-device-mobile.h				\
+ 	net-vpn.c					\
+ 	net-vpn.h					\
+ 	net-proxy.c					\
+diff --git a/panels/network/cc-network-panel.c b/panels/network/cc-network-panel.c
+index 0a29c92..2c71d33 100644
+--- a/panels/network/cc-network-panel.c
++++ b/panels/network/cc-network-panel.c
+@@ -41,8 +41,6 @@
+ #include "network-dialogs.h"
+ #include "connection-editor/net-connection-editor.h"
+ 
+-#include <libmm-glib.h>
+-
+ CC_PANEL_REGISTER (CcNetworkPanel, cc_network_panel)
+ 
+ #define NETWORK_PANEL_PRIVATE(o) \
+@@ -63,7 +61,6 @@ struct _CcNetworkPanelPrivate
+         GtkBuilder       *builder;
+         GtkWidget        *treeview;
+         NMClient         *client;
+-        MMManager        *modem_manager;
+         gboolean          updating_device;
+ 
+         /* Killswitch stuff */
+@@ -225,7 +222,6 @@ cc_network_panel_dispose (GObject *object)
+         g_clear_object (&priv->rfkill_proxy);
+         g_clear_object (&priv->builder);
+         g_clear_object (&priv->client);
+-        g_clear_object (&priv->modem_manager);
+         g_clear_object (&priv->kill_switch_header);
+         priv->rfkill_switch = NULL;
+ 
+@@ -714,7 +710,8 @@ panel_add_device (CcNetworkPanel *panel, NMDevice *device)
+                 device_g_type = NET_TYPE_DEVICE_ETHERNET;
+                 break;
+         case NM_DEVICE_TYPE_MODEM:
+-                device_g_type = NET_TYPE_DEVICE_MOBILE;
++                /* Don't support modems */
++                goto out;
+                 break;
+         case NM_DEVICE_TYPE_WIFI:
+                 device_g_type = NET_TYPE_DEVICE_WIFI;
+@@ -734,31 +731,6 @@ panel_add_device (CcNetworkPanel *panel, NMDevice *device)
+                                    "id", nm_device_get_udi (device),
+                                    NULL);
+ 
+-        if (type == NM_DEVICE_TYPE_MODEM &&
+-            g_str_has_prefix (nm_device_get_udi (device), "/org/freedesktop/ModemManager1/Modem/")) {
+-                GDBusObject *modem_object;
+-
+-                if (priv->modem_manager == NULL) {
+-                        g_warning ("Cannot grab information for modem at %s: No ModemManager support",
+-                                   nm_device_get_udi (device));
+-                        goto out;
+-                }
+-
+-                modem_object = g_dbus_object_manager_get_object (G_DBUS_OBJECT_MANAGER (priv->modem_manager),
+-                                                                 nm_device_get_udi (device));
+-                if (modem_object == NULL) {
+-                        g_warning ("Cannot grab information for modem at %s: Not found",
+-                                   nm_device_get_udi (device));
+-                        goto out;
+-                }
+-
+-                /* Set the modem object in the NetDeviceMobile */
+-                g_object_set (net_device,
+-                              "mm-object", modem_object,
+-                              NULL);
+-                g_object_unref (modem_object);
+-        }
+-
+         /* add as a panel */
+         if (device_g_type != NET_TYPE_DEVICE) {
+                 notebook = GTK_NOTEBOOK (gtk_builder_get_object (panel->priv->builder,
+@@ -1264,7 +1236,6 @@ cc_network_panel_init (CcNetworkPanel *panel)
+         GtkTreeSelection *selection;
+         GtkWidget *widget;
+         GtkWidget *toplevel;
+-        GDBusConnection *system_bus;
+         GtkCssProvider *provider;
+         const GPtrArray *connections;
+         guint i;
+@@ -1317,25 +1288,6 @@ cc_network_panel_init (CcNetworkPanel *panel)
+         g_signal_connect (panel->priv->client, "device-removed",
+                           G_CALLBACK (device_removed_cb), panel);
+ 
+-        /* Setup ModemManager client */
+-        system_bus = g_bus_get_sync (G_BUS_TYPE_SYSTEM, NULL, &error);
+-        if (system_bus == NULL) {
+-                g_warning ("Error connecting to system D-Bus: %s",
+-                           error->message);
+-                g_clear_error (&error);
+-        } else {
+-                panel->priv->modem_manager = mm_manager_new_sync (system_bus,
+-                                                                  G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_NONE,
+-                                                                  NULL,
+-                                                                  &error);
+-                if (panel->priv->modem_manager == NULL) {
+-                        g_warning ("Error connecting to ModemManager: %s",
+-                                   error->message);
+-                        g_clear_error (&error);
+-                }
+-                g_object_unref (system_bus);
+-        }
+-
+         widget = GTK_WIDGET (gtk_builder_get_object (panel->priv->builder,
+                                                      "add_toolbutton"));
+         g_signal_connect (widget, "clicked",
+-- 
+2.12.2
+
