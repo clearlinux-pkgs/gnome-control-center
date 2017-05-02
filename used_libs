@@ -7,6 +7,8 @@ libcairo-gobject.so.2
 libcairo.so.2
 libcanberra-gtk3.so.0
 libcanberra.so.0
+libcheese-gtk.so.25
+libcheese.so.8
 libcolord-gtk.so.1
 libcolord.so.2
 libcolordprivate.so.2

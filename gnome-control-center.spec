@@ -4,7 +4,7 @@
 #
 Name     : gnome-control-center
 Version  : 3.24.1
-Release  : 5
+Release  : 6
 URL      : https://download.gnome.org/sources/gnome-control-center/3.24/gnome-control-center-3.24.1.tar.xz
 Source0  : https://download.gnome.org/sources/gnome-control-center/3.24/gnome-control-center-3.24.1.tar.xz
 Summary  : Keybindings configuration for GNOME applications
@@ -32,6 +32,7 @@ BuildRequires : perl(XML::Parser)
 BuildRequires : pkg-config-dev
 BuildRequires : pkgconfig(accountsservice)
 BuildRequires : pkgconfig(cairo-gobject)
+BuildRequires : pkgconfig(cheese-gtk)
 BuildRequires : pkgconfig(colord)
 BuildRequires : pkgconfig(colord-gtk)
 BuildRequires : pkgconfig(fontconfig)
@@ -122,12 +123,12 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1493742219
-%reconfigure --disable-static --without-cheese --disable-update-mimedb --disable-documentation
+export SOURCE_DATE_EPOCH=1493743235
+%reconfigure --disable-static --with-cheese --disable-update-mimedb --disable-documentation
 make V=1  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1493742219
+export SOURCE_DATE_EPOCH=1493743235
 rm -rf %{buildroot}
 %make_install
 %find_lang gnome-control-center-2.0
