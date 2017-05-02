@@ -1,1 +1,1 @@
---without-cheese --disable-update-mimedb --disable-documentation
+--with-cheese --disable-update-mimedb --disable-documentation
