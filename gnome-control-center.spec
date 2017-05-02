@@ -4,7 +4,7 @@
 #
 Name     : gnome-control-center
 Version  : 3.24.1
-Release  : 4
+Release  : 5
 URL      : https://download.gnome.org/sources/gnome-control-center/3.24/gnome-control-center-3.24.1.tar.xz
 Source0  : https://download.gnome.org/sources/gnome-control-center/3.24/gnome-control-center-3.24.1.tar.xz
 Summary  : Keybindings configuration for GNOME applications
@@ -67,6 +67,7 @@ BuildRequires : pkgconfig(xi)
 BuildRequires : sed
 BuildRequires : shared-mime-info
 Patch1: 0001-Remove-support-for-Modem-manager.patch
+Patch2: 0002-panels-Use-the-correct-stateless-vendor-os-release-f.patch
 
 %description
 GNOME Control Center
@@ -114,18 +115,19 @@ locales components for the gnome-control-center package.
 %prep
 %setup -q -n gnome-control-center-3.24.1
 %patch1 -p1
+%patch2 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1493399925
+export SOURCE_DATE_EPOCH=1493742219
 %reconfigure --disable-static --without-cheese --disable-update-mimedb --disable-documentation
 make V=1  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1493399925
+export SOURCE_DATE_EPOCH=1493742219
 rm -rf %{buildroot}
 %make_install
 %find_lang gnome-control-center-2.0
