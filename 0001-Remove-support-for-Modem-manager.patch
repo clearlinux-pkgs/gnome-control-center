@@ -1,7 +1,7 @@
 From fc1bc55c9c45a14f9a6be69b75b06ffa054b9c71 Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Fri, 28 Apr 2017 18:06:28 +0100
-Subject: [PATCH] Remove support for Modem manager
+Subject: [PATCH 1/2] Remove support for Modem manager
 
 Clear Linux doesn't support Modem Manager, and only uses Network Manager
 at present for wifi support.

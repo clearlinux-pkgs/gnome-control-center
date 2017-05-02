@@ -1,0 +1,59 @@
+From e1faea87df83ba13d7c416bdf9622519c31e9bb6 Mon Sep 17 00:00:00 2001
+From: Ikey Doherty <michael.i.doherty@intel.com>
+Date: Tue, 2 May 2017 17:16:56 +0100
+Subject: [PATCH 2/2] panels: Use the correct stateless (vendor) os-release
+ file at all times
+
+Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
+---
+ panels/info/cc-info-panel.c       | 2 +-
+ panels/privacy/cc-privacy-panel.c | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/panels/info/cc-info-panel.c b/panels/info/cc-info-panel.c
+index 3ce8b57..dcfc50e 100644
+--- a/panels/info/cc-info-panel.c
++++ b/panels/info/cc-info-panel.c
+@@ -436,7 +436,7 @@ get_os_info (void)
+ 
+   hashtable = NULL;
+ 
+-  if (g_file_get_contents ("/etc/os-release", &buffer, NULL, NULL))
++  if (g_file_get_contents ("/usr/lib/os-release", &buffer, NULL, NULL))
+     {
+       gchar **lines;
+       gint i;
+diff --git a/panels/privacy/cc-privacy-panel.c b/panels/privacy/cc-privacy-panel.c
+index b096721..ef38452 100644
+--- a/panels/privacy/cc-privacy-panel.c
++++ b/panels/privacy/cc-privacy-panel.c
+@@ -85,7 +85,7 @@ get_os_name (void)
+ 
+   name = NULL;
+ 
+-  if (g_file_get_contents ("/etc/os-release", &buffer, NULL, NULL))
++  if (g_file_get_contents ("/usr/lib/os-release", &buffer, NULL, NULL))
+     {
+        char *start, *end;
+ 
+@@ -126,7 +126,7 @@ get_privacy_policy_url (void)
+ 
+   url = NULL;
+ 
+-  if (g_file_get_contents ("/etc/os-release", &buffer, NULL, NULL))
++  if (g_file_get_contents ("/usr/lib/os-release", &buffer, NULL, NULL))
+     {
+        char *start, *end;
+ 
+@@ -1221,7 +1221,7 @@ add_abrt (CcPrivacyPanel *self)
+   url = get_privacy_policy_url ();
+   if (!url)
+     {
+-      g_debug ("Not watching for ABRT appearing, /etc/os-release lacks a privacy policy URL");
++      g_debug ("Not watching for ABRT appearing, /usr/lib/os-release lacks a privacy policy URL");
+       return;
+     }
+   msg = g_strdup_printf ("<a href=\"%s\">%s</a>", url, _("Privacy Policy"));
+-- 
+2.12.2
+
