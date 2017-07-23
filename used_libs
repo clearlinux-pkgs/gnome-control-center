@@ -9,6 +9,8 @@ libcanberra-gtk3.so.0
 libcanberra.so.0
 libcheese-gtk.so.25
 libcheese.so.8
+libclutter-1.0.so.0
+libclutter-gtk-1.0.so.0
 libcolord-gtk.so.1
 libcolord.so.2
 libcolordprivate.so.2
@@ -43,4 +45,5 @@ libpwquality.so.1
 libsmbclient.so.0
 libsoup-2.4.so.1
 libupower-glib.so.3
+libwacom.so.2
 libxml2.so.2
