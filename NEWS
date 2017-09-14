@@ -1,13 +1,93 @@
 ==============
-Version 3.24.3
+Version 3.26.0
 ==============
 
-- Memory leak and correctness fixes
 - Translation updates
 
+=================
+Version 3.25.92.1
+=================
+
+- Fix inability to run Settings shell caused by a broken translation
+- Translation updates
+
+===============
+Version 3.25.92
+===============
+
+- A few more layout adjustments for the new shell
+- Make Devices and Details rows selectable
+- Crash and memory leak fixes
+- Translation updates
+
+Display:
+- Fix the two output UI to start with the current configuration
+- Ensure we generate the UI initially on two output mode
+- Don't show inactive monitors in the arrangement widget
+- Show refresh rates with two digits after the radix
+- Round the displayed scale values logically
+- Fix some valid scaled multi monitor layouts being rejected by mutter
+
+Sharing:
+- Add Wayland screen sharing support - only shown if mutter advertises
+  the capability
+
+===============
+Version 3.25.91
+===============
+
+- Several small UI improvements and layout adjustments
+- Various crash fixes
+- Translation updates
+
+===============
+Version 3.25.90
+===============
+
+- Changed to a new shell design with a side bar to switch panels
+- The info panel was split into default apps, overview and removable
+  media
+- Fixed Toronto being translated as Tortola in some locales
+- Translation updates
+
+Display:
+- Redesigned
+
 Network:
-- Update connection titles when they change
-- Sort connections by title
+- Redesigned
+
+Power:
+- Restore Power Off option for Power Button
+
+==============
+Version 3.25.4
+==============
+
+- A new Wi-Fi panel is introduced replacing the corresponding
+  functionality in the Network panel
+
+Bluetooth:
+- Center empty states in the panel
+
+Display:
+- Adapt to new Mutter interface with scaling per mode
+
+Keyboard:
+- Fix several memory leaks
+- Follow the usual search pattern for filtering
+- Consider additional bindings in uniqueness checks
+- Consider multiple bindings when resetting
+
+Network:
+- Replace the notebook with a stack
+- Stop managing wi-fi devices
+
+Printers:
+- Fix a crash when the user cancels the add new printer dialog
+
+Region & Language:
+- Embed "Restart session" button below the Language entry
+- Make the "Restart" notification persist until the session restarts
 
 Wacom:
 - Make the calibrator only reactive to the tablet being calibrated
@@ -15,47 +95,101 @@ Wacom:
 - Recognize and pair pad devices with others on the same tablet
 
 ==============
-Version 3.24.2
+Version 3.25.3
+==============
+
+- Fix memory leaks
+
+Background:
+- handle EXIF orientation in chooser
+
+Network:
+- Reduce connection editor dialog width
+- Rely on notebook tabs to switch connection editor pages
+- Align details page labels at start
+- Move checkboxes to Details page
+- Drop Reset page
+- Adapt forget button label according to connection type
+- Move Security page to the end
+- Use radio buttons instead of a combobox in IP pages
+- Avoid crashing if the NMDevice doesn't have a hw-address
+- Simplify the ignored Network interface types
+
+Online Accounts:
+- Move the margins and spacing lower down the hierarchy
+- Increase the spacing above the "Remove Account" button
+
+Printers:
+- Don't block when removing printers
+- Allow undoing deletion of a printer
+- Add 10s timeout for printer removal
+- Scroll view to show newly added Printer
+- Move options dialog spinner out of the action area
+- Add print "Test Page" button to Options Dialog
+- Hide supply level bar when there is no inklevel data
+
+Region & Language:
+- Make the input source chooser back button activate on click
+- Don't return the input chooser dialog if nothing is selected
+- Avoid starting with a gap at the bottom of the input chooser
+
+
+==============
+Version 3.25.2
 ==============
 
 - Memory leak and correctness fixes
+- Add keywords to several panels to ease search
+- Make more dialogs use headerbars
 - Translation updates
+
+Display:
+- Fix blurry icons in night light dialogue
+- Add support for mutter's new display config API
+
+Info:
+- Fix total disc size for btrfs subvolumes
+- Split up "Base system" and "OS type" to separate lines
 
 Keyboard:
 - Discard the added shortcut on Escape
-
-Network:
-- Fix mobile broadband switch state
-
-==============
-Version 3.24.1
-==============
-
-- Fix check for existing shortcut settings
-- Fix possible crash when exiting Printers panel
-- Fix blurry icons in night light dialogue
-
-==============
-Version 3.24.0
-==============
-- Translation updates
-
-===============
-Version 3.23.92
-===============
+- Allow searching for shortcut accelerators
 
 Network:
 - Fix SSID not changing when enabling hotspot
 - Fix initial state of Wi-Fi device when using Hotpost
+- Update wireless-security from network-manager-applet
+- Fix mobile broadband switch state
+- Remove support for firewalld zones
+- Update connection titles when they change
+- Sort connections by title
 
 Notifications:
 - Forward notification settings to portal
 
 Printers:
+- Add search capabilities to the panel
 - Improve panel layout
 - Allow printer model label to ellipsize
 - Don't block on the network in the jobs dialogue
--
+- Add an extra button "Clean Print Heads" when available
+- Fix possible crash when exiting Printers panel
+
+Region:
+- Use locale aware date time formats for previewing
+
+Search:
+- UI improvements
+
+Universal Access:
+- Add Cursor Size selection dialogue
+
+User Accounts:
+- Fix layout in add user dialog
+- Add strength indicator level for weak passwords
+- Improve password hints
+- Fix photo popup position on wayland
+- Handle EXIF orientation
 
 ===============
 Version 3.23.91
