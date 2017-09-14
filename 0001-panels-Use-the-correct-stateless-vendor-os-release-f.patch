@@ -1,20 +1,25 @@
-From e1faea87df83ba13d7c416bdf9622519c31e9bb6 Mon Sep 17 00:00:00 2001
+From 4b63ca439256db93b8d99250d1171abd3b83c8c6 Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Tue, 2 May 2017 17:16:56 +0100
-Subject: [PATCH 2/2] panels: Use the correct stateless (vendor) os-release
- file at all times
+Subject: [PATCH] panels: Use the correct stateless (vendor) os-release file at
+ all times
 
 Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
 ---
- panels/info/cc-info-panel.c       | 2 +-
- panels/privacy/cc-privacy-panel.c | 6 +++---
+
+rebased for version 3.26.0
+
+Signed-off-by: Simental Magana, Marcos <marcos.simental.magana@intel.com>
+---
+ panels/info/cc-info-overview-panel.c | 2 +-
+ panels/privacy/cc-privacy-panel.c    | 6 +++---
  2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/panels/info/cc-info-panel.c b/panels/info/cc-info-panel.c
-index 3ce8b57..dcfc50e 100644
---- a/panels/info/cc-info-panel.c
-+++ b/panels/info/cc-info-panel.c
-@@ -436,7 +436,7 @@ get_os_info (void)
+diff --git a/panels/info/cc-info-overview-panel.c b/panels/info/cc-info-overview-panel.c
+index 3af58be..4957f23 100644
+--- a/panels/info/cc-info-overview-panel.c
++++ b/panels/info/cc-info-overview-panel.c
+@@ -391,7 +391,7 @@ get_os_info (void)
  
    hashtable = NULL;
  
@@ -24,7 +29,7 @@ index 3ce8b57..dcfc50e 100644
        gchar **lines;
        gint i;
 diff --git a/panels/privacy/cc-privacy-panel.c b/panels/privacy/cc-privacy-panel.c
-index b096721..ef38452 100644
+index ab367b6..9377c26 100644
 --- a/panels/privacy/cc-privacy-panel.c
 +++ b/panels/privacy/cc-privacy-panel.c
 @@ -85,7 +85,7 @@ get_os_name (void)
@@ -55,5 +60,5 @@ index b096721..ef38452 100644
      }
    msg = g_strdup_printf ("<a href=\"%s\">%s</a>", url, _("Privacy Policy"));
 -- 
-2.12.2
+2.14.1
 
