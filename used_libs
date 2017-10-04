@@ -13,7 +13,6 @@ libclutter-1.0.so.0
 libclutter-gtk-1.0.so.0
 libcolord-gtk.so.1
 libcolord.so.2
-libcolordprivate.so.2
 libcups.so.2
 libfontconfig.so.1
 libgcc_s.so.1
@@ -28,7 +27,7 @@ libgoa-backend-1.0.so.1
 libgobject-2.0.so.0
 libgrilo-0.3.so.0
 libgtk-3.so.0
-libgtop-2.0.so.10
+libgtop-2.0.so.11
 libgudev-1.0.so.0
 libibus-1.0.so.5
 libkrb5.so.3
