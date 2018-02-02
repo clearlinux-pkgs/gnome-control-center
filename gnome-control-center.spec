@@ -4,7 +4,7 @@
 #
 Name     : gnome-control-center
 Version  : 3.26.2
-Release  : 14
+Release  : 15
 URL      : https://download.gnome.org/sources/gnome-control-center/3.26/gnome-control-center-3.26.2.tar.xz
 Source0  : https://download.gnome.org/sources/gnome-control-center/3.26/gnome-control-center-3.26.2.tar.xz
 Summary  : Keybindings configuration for GNOME applications
