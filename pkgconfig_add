@@ -12,3 +12,13 @@ smbclient
 accountsservice
 ibus-1.0
 pwquality
+libpulse
+gnome-desktop-3.0
+gnome-settings-daemon
+goa-1.0
+polkit-gobject-1
+upower-glib
+gudev-1.0
+gnome-bluetooth-1.0
+mm-glib
+libwacom

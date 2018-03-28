@@ -1,1 +1,1 @@
---with-cheese --disable-update-mimedb --disable-documentation
+-Dwith-introspection=true
