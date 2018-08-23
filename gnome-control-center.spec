@@ -4,7 +4,7 @@
 #
 Name     : gnome-control-center
 Version  : 3.28.2
-Release  : 21
+Release  : 22
 URL      : https://download.gnome.org/sources/gnome-control-center/3.28/gnome-control-center-3.28.2.tar.xz
 Source0  : https://download.gnome.org/sources/gnome-control-center/3.28/gnome-control-center-3.28.2.tar.xz
 Summary  : Keybindings configuration for GNOME applications
@@ -12,18 +12,20 @@ Group    : Development/Tools
 License  : GPL-2.0 MIT
 Requires: gnome-control-center-bin
 Requires: gnome-control-center-data
+Requires: gnome-control-center-license
 Requires: gnome-control-center-locales
+BuildRequires : buildreq-meson
+BuildRequires : buildreq-qmake
 BuildRequires : colord
 BuildRequires : colord-gtk-dev
 BuildRequires : cups-dev
 BuildRequires : docbook-xml
 BuildRequires : e2fsprogs-dev
+BuildRequires : gnutls-dev
 BuildRequires : intltool
 BuildRequires : krb5-dev
 BuildRequires : libgtop-dev
 BuildRequires : libxslt-bin
-BuildRequires : meson
-BuildRequires : ninja
 BuildRequires : pkgconfig(accountsservice)
 BuildRequires : pkgconfig(cheese-gtk)
 BuildRequires : pkgconfig(colord-gtk)
@@ -46,9 +48,6 @@ BuildRequires : pkgconfig(polkit-gobject-1)
 BuildRequires : pkgconfig(pwquality)
 BuildRequires : pkgconfig(smbclient)
 BuildRequires : pkgconfig(upower-glib)
-BuildRequires : python3
-BuildRequires : qtbase-dev
-BuildRequires : qtbase-extras
 BuildRequires : shared-mime-info
 Patch1: 0001-panels-Use-the-correct-stateless-vendor-os-release-f.patch
 
@@ -63,6 +62,7 @@ aspects of your desktop.
 Summary: bin components for the gnome-control-center package.
 Group: Binaries
 Requires: gnome-control-center-data
+Requires: gnome-control-center-license
 
 %description bin
 bin components for the gnome-control-center package.
@@ -74,6 +74,14 @@ Group: Data
 
 %description data
 data components for the gnome-control-center package.
+
+
+%package license
+Summary: license components for the gnome-control-center package.
+Group: Default
+
+%description license
+license components for the gnome-control-center package.
 
 
 %package locales
@@ -93,11 +101,14 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1527655371
+export SOURCE_DATE_EPOCH=1535062271
 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --prefix /usr --buildtype=plain -Dwith-introspection=true  builddir
 ninja -v -C builddir
 
 %install
+mkdir -p %{buildroot}/usr/share/doc/gnome-control-center
+cp COPYING %{buildroot}/usr/share/doc/gnome-control-center/COPYING
+cp panels/wacom/calibrator/COPYING %{buildroot}/usr/share/doc/gnome-control-center/panels_wacom_calibrator_COPYING
 DESTDIR=%{buildroot} ninja -C builddir install
 %find_lang gnome-control-center-2.0
 %find_lang gnome-control-center-2.0-timezones
@@ -321,6 +332,11 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/sounds/gnome/default/alerts/drip.ogg
 /usr/share/sounds/gnome/default/alerts/glass.ogg
 /usr/share/sounds/gnome/default/alerts/sonar.ogg
+
+%files license
+%defattr(-,root,root,-)
+/usr/share/doc/gnome-control-center/COPYING
+/usr/share/doc/gnome-control-center/panels_wacom_calibrator_COPYING
 
 %files locales -f gnome-control-center-2.0.lang -f gnome-control-center-2.0-timezones.lang
 %defattr(-,root,root,-)
