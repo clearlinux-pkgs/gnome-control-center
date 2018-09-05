@@ -42,6 +42,7 @@ libpthread.so.0
 libpulse-mainloop-glib.so.0
 libpulse.so.0
 libpwquality.so.1
+libsecret-1.so.0
 libsmbclient.so.0
 libsoup-2.4.so.1
 libupower-glib.so.3
