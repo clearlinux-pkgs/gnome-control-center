@@ -4,7 +4,7 @@
 #
 Name     : gnome-control-center
 Version  : 3.30.0
-Release  : 23
+Release  : 24
 URL      : https://download.gnome.org/sources/gnome-control-center/3.30/gnome-control-center-3.30.0.tar.xz
 Source0  : https://download.gnome.org/sources/gnome-control-center/3.30/gnome-control-center-3.30.0.tar.xz
 Summary  : Keybindings configuration for GNOME applications
@@ -14,6 +14,7 @@ Requires: gnome-control-center-bin
 Requires: gnome-control-center-data
 Requires: gnome-control-center-license
 Requires: gnome-control-center-locales
+Requires: glibc-locale
 BuildRequires : buildreq-gnome
 BuildRequires : buildreq-meson
 BuildRequires : buildreq-qmake
@@ -22,6 +23,7 @@ BuildRequires : colord-gtk-dev
 BuildRequires : cups-dev
 BuildRequires : docbook-xml
 BuildRequires : e2fsprogs-dev
+BuildRequires : glibc-locale
 BuildRequires : gnutls-dev
 BuildRequires : intltool
 BuildRequires : krb5-dev
@@ -101,7 +103,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1536145319
+export SOURCE_DATE_EPOCH=1536318635
 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --prefix /usr --buildtype=plain -Dwith-introspection=true  builddir
 ninja -v -C builddir
 
