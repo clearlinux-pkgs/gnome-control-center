@@ -11,3 +11,4 @@ docbook-xml
 intltool
 colord
 glibc-locale
+gsettings-desktop-schemas-dev

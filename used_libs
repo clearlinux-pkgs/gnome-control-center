@@ -4,12 +4,8 @@ libatk-1.0.so.0
 libc.so.6
 libcairo-gobject.so.2
 libcairo.so.2
-libcanberra-gtk3.so.0
-libcanberra.so.0
 libcheese-gtk.so.25
 libcheese.so.8
-libclutter-1.0.so.0
-libclutter-gtk-1.0.so.0
 libcolord-gtk.so.1
 libcolord.so.2
 libcups.so.2
@@ -25,6 +21,7 @@ libgoa-1.0.so.0
 libgoa-backend-1.0.so.1
 libgobject-2.0.so.0
 libgrilo-0.3.so.0
+libgsound.so.0
 libgtk-3.so.0
 libgtop-2.0.so.11
 libgudev-1.0.so.0
@@ -44,6 +41,7 @@ libpwquality.so.1
 libsecret-1.so.0
 libsmbclient.so.0
 libsoup-2.4.so.1
+libudisks2.so.0
 libupower-glib.so.3
 libwacom.so.2
 libxml2.so.2

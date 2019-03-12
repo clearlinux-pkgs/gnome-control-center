@@ -1,4 +1,8 @@
-3.30.3
+3.32.0.1
 gnutls-dev
+gsettings-desktop-schemas
+gsound-dev
 libsecret-dev
 pkgconfig(libsecret-1)
+udisks2-dev
+upower-dev
