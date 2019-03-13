@@ -4,10 +4,10 @@
 #
 Name     : gnome-control-center
 Version  : 3.32.0.1
-Release  : 32
+Release  : 33
 URL      : https://download.gnome.org/sources/gnome-control-center/3.32/gnome-control-center-3.32.0.1.tar.xz
 Source0  : https://download.gnome.org/sources/gnome-control-center/3.32/gnome-control-center-3.32.0.1.tar.xz
-Summary  : GNOME's main interface to configure various aspects of the desktop
+Summary  : A library full of GTK+ widgets for mobile phones
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1 LGPL-2.1+ MIT
 Requires: gnome-control-center-bin = %{version}-%{release}
@@ -62,9 +62,9 @@ BuildRequires : udisks2-dev
 BuildRequires : upower-dev
 
 %description
-[![Build Status](https://gitlab.gnome.org/GNOME/gnome-control-center/badges/master/build.svg)](https://gitlab.gnome.org/GNOME/gnome-control-center/pipelines)
-[![Coverage report](https://gitlab.gnome.org/GNOME/gnome-control-center/badges/master/coverage.svg)](https://gnome.pages.gitlab.gnome.org/gnome-control-center/)
-[![License](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://gitlab.gnome.org/GNOME/gnome-control-center/blob/master/COPYING)
+These files are either copied from NetworkManager or just empty files. The
+files live in the nn-utils subdirectory as that makes the relative
+includes that they contain work fine.
 
 %package bin
 Summary: bin components for the gnome-control-center package.
@@ -83,6 +83,17 @@ Group: Data
 
 %description data
 data components for the gnome-control-center package.
+
+
+%package dev
+Summary: dev components for the gnome-control-center package.
+Group: Development
+Requires: gnome-control-center-bin = %{version}-%{release}
+Requires: gnome-control-center-data = %{version}-%{release}
+Provides: gnome-control-center-devel = %{version}-%{release}
+
+%description dev
+dev components for the gnome-control-center package.
 
 
 %package libexec
@@ -118,7 +129,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1552359661
+export SOURCE_DATE_EPOCH=1552435861
 export LDFLAGS="${LDFLAGS} -fno-lto"
 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --prefix /usr --buildtype=plain -Dwith-introspection=true  builddir
 ninja -v -C builddir
@@ -131,6 +142,10 @@ cp subprojects/libhandy/COPYING %{buildroot}/usr/share/package-licenses/gnome-co
 DESTDIR=%{buildroot} ninja -C builddir install
 %find_lang gnome-control-center-2.0
 %find_lang gnome-control-center-2.0-timezones
+## install_append content
+mkdir -p %{buildroot}/usr/lib64/pkgconfig
+mv %{buildroot}/usr/share/pkgconfig/gnome-keybindings.pc %{buildroot}/usr/lib64/pkgconfig/
+## install_append end
 
 %files
 %defattr(-,root,root,-)
@@ -283,7 +298,6 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/pixmaps/faces/tomatoes.jpg
 /usr/share/pixmaps/faces/tree.jpg
 /usr/share/pixmaps/faces/yellow-rose.jpg
-/usr/share/pkgconfig/gnome-keybindings.pc
 /usr/share/polkit-1/actions/org.gnome.controlcenter.datetime.policy
 /usr/share/polkit-1/actions/org.gnome.controlcenter.remote-login-helper.policy
 /usr/share/polkit-1/actions/org.gnome.controlcenter.user-accounts.policy
@@ -292,6 +306,10 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/sounds/gnome/default/alerts/drip.ogg
 /usr/share/sounds/gnome/default/alerts/glass.ogg
 /usr/share/sounds/gnome/default/alerts/sonar.ogg
+
+%files dev
+%defattr(-,root,root,-)
+/usr/lib64/pkgconfig/gnome-keybindings.pc
 
 %files libexec
 %defattr(-,root,root,-)
