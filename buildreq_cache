@@ -2,6 +2,7 @@
 gnutls-dev
 gsettings-desktop-schemas
 gsound-dev
+libhandy-dev
 libsecret-dev
 pkgconfig(libsecret-1)
 udisks2-dev
