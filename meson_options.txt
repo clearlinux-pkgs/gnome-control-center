@@ -1,41 +1,29 @@
-option('package-name',
-  type: 'string',
-  value: '',
-  description: 'The value for the GETTEXT_PACKAGE define.'
+# Performance and debugging related options
+option('profiling', type: 'boolean', value: false)
+
+option('static', type: 'boolean', value: false,
+  description: 'Build as a static library'
 )
 
-option('package-version',
-  type: 'string',
-  value: '',
-  description: 'The value for the PACKAGE_VERSION define.'
+option('introspection', type: 'feature', value: 'auto')
+option('vapi', type: 'boolean', value: true)
+
+# Subproject
+option('package_subdir', type: 'string',
+  description: 'Subdirectory to append to all installed files, for use as subproject'
 )
 
-option('pkglibdir',
-  type: 'string',
-  value: '',
-  description: 'The private directory the shared library/typelib will be installed into.'
-)
+option('gtk_doc',
+       type: 'boolean', value: false,
+       description: 'Whether to generate the API reference for Handy')
 
-option('pkgdatadir',
-  type: 'string',
-  value: '',
-  description: 'The private directory the gir file will be installed into.'
-)
+option('tests',
+       type: 'boolean', value: true,
+       description: 'Whether to compile unit tests')
 
-option('alsa',
-  type: 'boolean',
-  value: true,
-  description: 'Build ALSA support.'
-)
+option('examples',
+       type: 'boolean', value: true,
+       description: 'Build and install the examples and demo applications')
 
-option('static',
-  type: 'boolean',
-  value: false,
-  description: 'Build as a static library.'
-)
-
-option('with-introspection',
-  type: 'boolean',
-  value: false,
-  description: 'Build gobject-introspection support'
-)
+option('glade_catalog', type: 'feature', value: 'auto',
+       description: 'Install a glade catalog file')
