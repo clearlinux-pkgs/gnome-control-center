@@ -1,0 +1,26 @@
+From e79c657e38dc4c7284f516d70d165de81cd6e297 Mon Sep 17 00:00:00 2001
+From: Athenas Jimenez <athenas.jimenez.gonzalez@intel.com>
+Date: Wed, 27 Mar 2019 13:38:50 -0600
+Subject: [PATCH] Check country value
+
+---
+ panels/common/cc-language-chooser.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/panels/common/cc-language-chooser.c b/panels/common/cc-language-chooser.c
+index ae6391a..54e8c4b 100644
+--- a/panels/common/cc-language-chooser.c
++++ b/panels/common/cc-language-chooser.c
+@@ -188,6 +188,9 @@ match_all (gchar       **words,
+ {
+         gchar **w;
+ 
++        if (str == NULL)
++            return FALSE;
++
+         for (w = words; *w; ++w)
+                 if (!strstr (str, *w))
+                         return FALSE;
+-- 
+2.21.0
+
