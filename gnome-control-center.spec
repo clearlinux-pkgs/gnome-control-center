@@ -4,10 +4,10 @@
 #
 Name     : gnome-control-center
 Version  : 3.32.1
-Release  : 36
+Release  : 37
 URL      : https://download.gnome.org/sources/gnome-control-center/3.32/gnome-control-center-3.32.1.tar.xz
 Source0  : https://download.gnome.org/sources/gnome-control-center/3.32/gnome-control-center-3.32.1.tar.xz
-Summary  : GNOME's main interface to configure various aspects of the desktop
+Summary  : A library full of GTK+ widgets for mobile phones
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1 LGPL-2.1+ MIT
 Requires: gnome-control-center-bin = %{version}-%{release}
@@ -15,10 +15,10 @@ Requires: gnome-control-center-data = %{version}-%{release}
 Requires: gnome-control-center-libexec = %{version}-%{release}
 Requires: gnome-control-center-license = %{version}-%{release}
 Requires: gnome-control-center-locales = %{version}-%{release}
+Requires: gnome-control-center-man = %{version}-%{release}
 Requires: glibc-locale
 BuildRequires : buildreq-gnome
 BuildRequires : buildreq-meson
-BuildRequires : buildreq-qmake
 BuildRequires : colord
 BuildRequires : colord-gtk-dev
 BuildRequires : cups-dev
@@ -26,12 +26,14 @@ BuildRequires : docbook-xml
 BuildRequires : e2fsprogs-dev
 BuildRequires : glibc-locale
 BuildRequires : gnutls-dev
+BuildRequires : gsettings-desktop-schemas
 BuildRequires : gsettings-desktop-schemas-dev
 BuildRequires : gsound-dev
 BuildRequires : intltool
 BuildRequires : krb5-dev
 BuildRequires : libgtop-dev
 BuildRequires : libhandy-dev
+BuildRequires : libsecret-dev
 BuildRequires : libxslt-bin
 BuildRequires : pkgconfig(accountsservice)
 BuildRequires : pkgconfig(cheese-gtk)
@@ -61,12 +63,13 @@ BuildRequires : pkgconfig(udisks2)
 BuildRequires : pkgconfig(upower-glib)
 BuildRequires : shared-mime-info
 BuildRequires : udisks2-dev
+BuildRequires : upower-dev
 Patch1: Check-country-value.patch
 
 %description
-[![Build Status](https://gitlab.gnome.org/GNOME/gnome-control-center/badges/master/build.svg)](https://gitlab.gnome.org/GNOME/gnome-control-center/pipelines)
-[![Coverage report](https://gitlab.gnome.org/GNOME/gnome-control-center/badges/master/coverage.svg)](https://gnome.pages.gitlab.gnome.org/gnome-control-center/)
-[![License](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://gitlab.gnome.org/GNOME/gnome-control-center/blob/master/COPYING)
+Those translations are copied from system-config-date
+http://git.fedorahosted.org/git/?p=system-config-date.git;a=tree;f=po/timezones
+and should not be modified by the GNOME translation teams.
 
 %package bin
 Summary: bin components for the gnome-control-center package.
@@ -93,7 +96,6 @@ Group: Development
 Requires: gnome-control-center-bin = %{version}-%{release}
 Requires: gnome-control-center-data = %{version}-%{release}
 Provides: gnome-control-center-devel = %{version}-%{release}
-Requires: gnome-control-center = %{version}-%{release}
 
 %description dev
 dev components for the gnome-control-center package.
@@ -124,6 +126,14 @@ Group: Default
 locales components for the gnome-control-center package.
 
 
+%package man
+Summary: man components for the gnome-control-center package.
+Group: Default
+
+%description man
+man components for the gnome-control-center package.
+
+
 %prep
 %setup -q -n gnome-control-center-3.32.1
 %patch1 -p1
@@ -133,8 +143,9 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1553883607
-CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --prefix /usr --buildtype=plain -Dwith-introspection=true  builddir
+export SOURCE_DATE_EPOCH=1554224635
+export LDFLAGS="${LDFLAGS} -fno-lto"
+CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --prefix /usr --buildtype=plain -Dwith-introspection=true -Ddocumentation=true  builddir
 ninja -v -C builddir
 
 %install
@@ -324,6 +335,10 @@ mv %{buildroot}/usr/share/pkgconfig/gnome-keybindings.pc %{buildroot}/usr/lib64/
 /usr/share/package-licenses/gnome-control-center/COPYING
 /usr/share/package-licenses/gnome-control-center/panels_wacom_calibrator_COPYING
 /usr/share/package-licenses/gnome-control-center/subprojects_libhandy_COPYING
+
+%files man
+%defattr(0644,root,root,0755)
+/usr/share/man/man1/gnome-control-center.1
 
 %files locales -f gnome-control-center-2.0.lang -f gnome-control-center-2.0-timezones.lang
 %defattr(-,root,root,-)
