@@ -1,2 +1,3 @@
 #0001-network-Move-AP-list-population-into-an-idle-handler.patch
 Check-country-value.patch
+0001-cc-privacy-add-support-for-telemetry.patch

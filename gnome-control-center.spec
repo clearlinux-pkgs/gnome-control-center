@@ -4,12 +4,12 @@
 #
 Name     : gnome-control-center
 Version  : 3.32.1
-Release  : 37
+Release  : 38
 URL      : https://download.gnome.org/sources/gnome-control-center/3.32/gnome-control-center-3.32.1.tar.xz
 Source0  : https://download.gnome.org/sources/gnome-control-center/3.32/gnome-control-center-3.32.1.tar.xz
 Summary  : A library full of GTK+ widgets for mobile phones
 Group    : Development/Tools
-License  : GPL-2.0 LGPL-2.1 LGPL-2.1+ MIT
+License  : GPL-2.0 GPL-3.0 LGPL-2.1 LGPL-2.1+ MIT
 Requires: gnome-control-center-bin = %{version}-%{release}
 Requires: gnome-control-center-data = %{version}-%{release}
 Requires: gnome-control-center-libexec = %{version}-%{release}
@@ -65,6 +65,7 @@ BuildRequires : shared-mime-info
 BuildRequires : udisks2-dev
 BuildRequires : upower-dev
 Patch1: Check-country-value.patch
+Patch2: 0001-cc-privacy-add-support-for-telemetry.patch
 
 %description
 Those translations are copied from system-config-date
@@ -96,6 +97,7 @@ Group: Development
 Requires: gnome-control-center-bin = %{version}-%{release}
 Requires: gnome-control-center-data = %{version}-%{release}
 Provides: gnome-control-center-devel = %{version}-%{release}
+Requires: gnome-control-center = %{version}-%{release}
 
 %description dev
 dev components for the gnome-control-center package.
@@ -137,13 +139,14 @@ man components for the gnome-control-center package.
 %prep
 %setup -q -n gnome-control-center-3.32.1
 %patch1 -p1
+%patch2 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1554224635
+export SOURCE_DATE_EPOCH=1555012512
 export LDFLAGS="${LDFLAGS} -fno-lto"
 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --prefix /usr --buildtype=plain -Dwith-introspection=true -Ddocumentation=true  builddir
 ninja -v -C builddir
@@ -153,6 +156,7 @@ mkdir -p %{buildroot}/usr/share/package-licenses/gnome-control-center
 cp COPYING %{buildroot}/usr/share/package-licenses/gnome-control-center/COPYING
 cp panels/wacom/calibrator/COPYING %{buildroot}/usr/share/package-licenses/gnome-control-center/panels_wacom_calibrator_COPYING
 cp subprojects/libhandy/COPYING %{buildroot}/usr/share/package-licenses/gnome-control-center/subprojects_libhandy_COPYING
+cp subprojects/libhandy/debian/copyright %{buildroot}/usr/share/package-licenses/gnome-control-center/subprojects_libhandy_debian_copyright
 DESTDIR=%{buildroot} ninja -C builddir install
 %find_lang gnome-control-center-2.0
 %find_lang gnome-control-center-2.0-timezones
@@ -335,6 +339,7 @@ mv %{buildroot}/usr/share/pkgconfig/gnome-keybindings.pc %{buildroot}/usr/lib64/
 /usr/share/package-licenses/gnome-control-center/COPYING
 /usr/share/package-licenses/gnome-control-center/panels_wacom_calibrator_COPYING
 /usr/share/package-licenses/gnome-control-center/subprojects_libhandy_COPYING
+/usr/share/package-licenses/gnome-control-center/subprojects_libhandy_debian_copyright
 
 %files man
 %defattr(0644,root,root,0755)
