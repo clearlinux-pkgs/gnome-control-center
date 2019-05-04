@@ -4,10 +4,10 @@
 #
 Name     : gnome-control-center
 Version  : 3.32.1
-Release  : 38
+Release  : 39
 URL      : https://download.gnome.org/sources/gnome-control-center/3.32/gnome-control-center-3.32.1.tar.xz
 Source0  : https://download.gnome.org/sources/gnome-control-center/3.32/gnome-control-center-3.32.1.tar.xz
-Summary  : A library full of GTK+ widgets for mobile phones
+Summary  : GNOME's main interface to configure various aspects of the desktop
 Group    : Development/Tools
 License  : GPL-2.0 GPL-3.0 LGPL-2.1 LGPL-2.1+ MIT
 Requires: gnome-control-center-bin = %{version}-%{release}
@@ -19,6 +19,7 @@ Requires: gnome-control-center-man = %{version}-%{release}
 Requires: glibc-locale
 BuildRequires : buildreq-gnome
 BuildRequires : buildreq-meson
+BuildRequires : buildreq-qmake
 BuildRequires : colord
 BuildRequires : colord-gtk-dev
 BuildRequires : cups-dev
@@ -68,9 +69,9 @@ Patch1: Check-country-value.patch
 Patch2: 0001-cc-privacy-add-support-for-telemetry.patch
 
 %description
-Those translations are copied from system-config-date
-http://git.fedorahosted.org/git/?p=system-config-date.git;a=tree;f=po/timezones
-and should not be modified by the GNOME translation teams.
+[![Build Status](https://gitlab.gnome.org/GNOME/gnome-control-center/badges/master/build.svg)](https://gitlab.gnome.org/GNOME/gnome-control-center/pipelines)
+[![Coverage report](https://gitlab.gnome.org/GNOME/gnome-control-center/badges/master/coverage.svg)](https://gnome.pages.gitlab.gnome.org/gnome-control-center/)
+[![License](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://gitlab.gnome.org/GNOME/gnome-control-center/blob/master/COPYING)
 
 %package bin
 Summary: bin components for the gnome-control-center package.
@@ -146,8 +147,14 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1555012512
-export LDFLAGS="${LDFLAGS} -fno-lto"
+export SOURCE_DATE_EPOCH=1556986979
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export NM=gcc-nm
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --prefix /usr --buildtype=plain -Dwith-introspection=true -Ddocumentation=true  builddir
 ninja -v -C builddir
 
