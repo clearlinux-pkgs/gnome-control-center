@@ -1,5 +1,5 @@
 PKG_NAME := gnome-control-center
-URL = https://download.gnome.org/sources/gnome-control-center/3.32/gnome-control-center-3.32.1.tar.xz
+URL = https://download.gnome.org/sources/gnome-control-center/3.32/gnome-control-center-3.32.2.tar.xz
 ARCHIVES = 
 
 include ../common/Makefile.common
