@@ -4,7 +4,7 @@
 #
 Name     : gnome-control-center
 Version  : 3.34.0.1
-Release  : 42
+Release  : 43
 URL      : https://download.gnome.org/sources/gnome-control-center/3.34/gnome-control-center-3.34.0.1.tar.xz
 Source0  : https://download.gnome.org/sources/gnome-control-center/3.34/gnome-control-center-3.34.0.1.tar.xz
 Summary  : GNOME's main interface to configure various aspects of the desktop
