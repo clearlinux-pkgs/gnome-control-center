@@ -4,7 +4,7 @@
 #
 Name     : gnome-control-center
 Version  : 3.34.0.1
-Release  : 43
+Release  : 44
 URL      : https://download.gnome.org/sources/gnome-control-center/3.34/gnome-control-center-3.34.0.1.tar.xz
 Source0  : https://download.gnome.org/sources/gnome-control-center/3.34/gnome-control-center-3.34.0.1.tar.xz
 Summary  : GNOME's main interface to configure various aspects of the desktop
@@ -26,12 +26,15 @@ BuildRequires : docbook-xml
 BuildRequires : e2fsprogs-dev
 BuildRequires : glibc-locale
 BuildRequires : gnutls-dev
+BuildRequires : gsettings-desktop-schemas
 BuildRequires : gsettings-desktop-schemas-dev
 BuildRequires : gsound-dev
 BuildRequires : intltool
 BuildRequires : krb5-dev
+BuildRequires : libcanberra-dev
 BuildRequires : libgtop-dev
 BuildRequires : libhandy-dev
+BuildRequires : libsecret-dev
 BuildRequires : libxslt-bin
 BuildRequires : pkgconfig(accountsservice)
 BuildRequires : pkgconfig(cheese-gtk)
@@ -61,6 +64,7 @@ BuildRequires : pkgconfig(udisks2)
 BuildRequires : pkgconfig(upower-glib)
 BuildRequires : shared-mime-info
 BuildRequires : udisks2-dev
+BuildRequires : upower-dev
 Patch1: Check-country-value.patch
 Patch2: 0001-cc-privacy-add-support-for-telemetry.patch
 
@@ -144,7 +148,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1568049895
+export SOURCE_DATE_EPOCH=1568126468
 # -Werror is for werrorists
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
