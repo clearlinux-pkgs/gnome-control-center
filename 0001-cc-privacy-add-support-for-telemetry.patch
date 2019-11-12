@@ -1,4 +1,4 @@
-From 16115d4b61c9e2462ba5ac7a92ceb85e31db6950 Mon Sep 17 00:00:00 2001
+From d41bdbc12ff3d587a5c4f3c55d8e3bcadd85de4e Mon Sep 17 00:00:00 2001
 From: Juro Bystricky <juro.bystricky@intel.com>
 Date: Mon, 18 Mar 2019 11:00:52 -0700
 Subject: [PATCH] cc-privacy: add support for telemetry
@@ -26,12 +26,12 @@ User will be prompted for admin password via "pkexec".
 
 Signed-off-by: Juro Bystricky <juro.bystricky@intel.com>
 ---
- panels/privacy/cc-privacy-panel.c  | 308 ++++++++++++++++++++++++++++-
- panels/privacy/cc-privacy-panel.ui | 156 +++++++++++++++
- 2 files changed, 460 insertions(+), 4 deletions(-)
+ panels/privacy/cc-privacy-panel.c  | 370 ++++++++++++++++++++++++++++-
+ panels/privacy/cc-privacy-panel.ui | 156 ++++++++++++
+ 2 files changed, 522 insertions(+), 4 deletions(-)
 
 diff --git a/panels/privacy/cc-privacy-panel.c b/panels/privacy/cc-privacy-panel.c
-index f30669add..645d939e7 100644
+index f30669add..e0b53707a 100644
 --- a/panels/privacy/cc-privacy-panel.c
 +++ b/panels/privacy/cc-privacy-panel.c
 @@ -78,6 +78,15 @@ struct _CcPrivacyPanel
@@ -86,28 +86,29 @@ index f30669add..645d939e7 100644
  
    bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
    g_dbus_connection_call (bus,
-@@ -1244,6 +1253,287 @@ add_software (CcPrivacyPanel *self)
+@@ -1244,6 +1253,349 @@ add_software (CcPrivacyPanel *self)
                     G_SETTINGS_BIND_DEFAULT);
  }
  
 +///////////////////////////////////////// telemetry code start /////////////
++static gboolean tm_telemctl_is_active (CcPrivacyPanel *self);
 +
 +static gboolean tm_is_installed (void)
 +{
 +  // A simple test, not requiring root credentials
-+  if (access ("/usr/share/clear/bundles/telemetrics", F_OK) != -1)
++  if (access ("/usr/bin/telemctl", F_OK) != -1)
 +    return TRUE;
 +
 +  return FALSE;
 +}
 +
-+static gboolean tm_is_enabled (void)
++static gboolean tm_is_enabled (CcPrivacyPanel *self)
 +{
 +  if (tm_is_installed ())
 +    {
 +    // Opted-in or out: simple test, not requiring root credentials
-+    if (access ("/etc/telemetrics/opt-out", F_OK) == -1)
-+      return TRUE;
++    if (access ("/etc/telemetrics/opt-in", F_OK) != -1)
++      return tm_telemctl_is_active (self);
 +    }
 +
 +  return FALSE;
@@ -140,14 +141,14 @@ index f30669add..645d939e7 100644
 +  if (tm_is_installed () == FALSE)
 +    label =  C_("Report problems", "Not installed");
 +  else
-+    label = tm_is_enabled () ?
++    label = tm_is_enabled (self) ?
 +      C_("Report problems", "On") : C_("Report problems", "Off");
 +
 +  gtk_label_set_label (self->telemetry_label, label);
 +
 +  if (tm_is_installed ())
 +    {
-+    gboolean tm_enabled = tm_is_enabled();
++    gboolean tm_enabled = tm_is_enabled(self);
 +
 +    g_signal_handlers_block_by_func (self->telemetry_switch, tm_change_state, self);
 +    gtk_switch_set_active (self->telemetry_switch, tm_enabled);
@@ -169,8 +170,9 @@ index f30669add..645d939e7 100644
 +}
 +
 +static GIOChannel *tm_stderr_ch = NULL;
++static GIOChannel *tm_stdout_ch = NULL;
 +
-+static void tm_free_channel(void)
++static void tm_free_channels(void)
 +{
 +  if (tm_stderr_ch != NULL)
 +    {
@@ -184,32 +186,20 @@ index f30669add..645d939e7 100644
 +      g_io_channel_unref (tm_stderr_ch);
 +      tm_stderr_ch = NULL;
 +    }
++  if (tm_stdout_ch != NULL)
++    {
++      GError *error = NULL;
++      if (g_io_channel_shutdown (tm_stdout_ch, TRUE, &error) != G_IO_STATUS_NORMAL)
++        {
++        g_warning ("Could not shutdown tm_stderr IO channel: %s", error->message);
++        g_error_free (error);
++        }
++
++      g_io_channel_unref (tm_stdout_ch);
++      tm_stdout_ch = NULL;
++    }
 +}
 +
-+static void
-+tm_telemctl_watch_func (GPid pid, gint status, gpointer user_data)
-+{
-+  CcPrivacyPanel* self = user_data;
-+  gtk_spinner_stop (GTK_SPINNER (self->telemetry_spinner));
-+  g_spawn_close_pid (pid);
-+
-+  if (status != 0)
-+    {
-+      gchar *string = NULL;
-+
-+      g_io_channel_read_line (tm_stderr_ch, &string, NULL, NULL, NULL);
-+      tm_show_error_dialog (self, _("Error"), string);
-+      g_free (string);
-+      tm_free_channel ();
-+    }
-+#if 0
-+  else
-+    {
-+      tm_show_error_dialog (self, _("Successfully changed error reporting state"), NULL);
-+    }
-+#endif
-+  tm_set_label (self);
-+}
 +
 +static void
 +tm_swupd_watch_func (GPid pid, gint status, gpointer user_data)
@@ -225,7 +215,7 @@ index f30669add..645d939e7 100644
 +      g_io_channel_read_line (tm_stderr_ch, &string, NULL, NULL, NULL);
 +      tm_show_error_dialog (self, _("Failed to install Telemetry software"), string);
 +      g_free (string);
-+      tm_free_channel ();
++      tm_free_channels ();
 +    }
 +  else
 +    {
@@ -254,7 +244,7 @@ index f30669add..645d939e7 100644
 +  gtk_widget_set_sensitive (GTK_WIDGET (self->telemetry_install_button), FALSE);
 +
 +  g_spawn_async_with_pipes (NULL,                            /* Working directory */
-+                            argv,                            /* Argument vector */
++                            (gchar**)argv,                   /* Argument vector */
 +                            envp,                            /* Environment */
 +                            G_SPAWN_DO_NOT_REAP_CHILD,       /* Flags */
 +                            NULL,                            /* Child setup */
@@ -275,6 +265,7 @@ index f30669add..645d939e7 100644
 +
 +  g_child_watch_add (pid_child, callback, self);
 +  tm_stderr_ch = g_io_channel_unix_new (tm_stderr);
++  tm_stdout_ch = g_io_channel_unix_new (tm_stdout);
 +  return TRUE;
 +}
 +
@@ -300,6 +291,52 @@ index f30669add..645d939e7 100644
 +  tm_set_label (self);
 +}
 +
++static void
++tm_telemctl_opt_in_cb (GPid pid, gint status, gpointer user_data)
++{
++  CcPrivacyPanel* self = user_data;
++  gtk_spinner_stop (GTK_SPINNER (self->telemetry_spinner));
++  g_spawn_close_pid (pid);
++
++  if (status != 0)
++    {
++      gchar *string = NULL;
++
++      g_io_channel_read_line (tm_stderr_ch, &string, NULL, NULL, NULL);
++      tm_show_error_dialog (self, _("Error"), string);
++      g_free (string);
++      tm_free_channels ();
++    }
++#if 0
++  else
++    {
++      tm_show_error_dialog (self, _("Successfully changed error reporting state"), NULL);
++    }
++#endif
++  tm_set_label (self);
++}
++
++static gint
++tm_capture_command_output_sync (CcPrivacyPanel *self, const char * cmd, char ** output)
++{
++  GError* error = NULL;
++  gchar *ioerr = NULL;
++  gint exit_status;
++
++  if (!g_spawn_command_line_sync(cmd, output, &ioerr, &exit_status, &error))
++    {
++    tm_show_error_dialog (self, _("Error"), error->message);
++    g_error_free (error);
++    }
++  if (exit_status != 0 && ioerr != NULL)
++    {
++    /* User canceled? */
++    tm_show_error_dialog (self, _("Error"), ioerr);
++    }
++
++  return exit_status;
++}
++
 +static gboolean
 +tm_change_state (GtkSwitch *switcher, gboolean state, gpointer user_data)
 +{
@@ -313,21 +350,46 @@ index f30669add..645d939e7 100644
 +    {
 +    if (state)
 +      {
-+      static const gchar *argv[]  = {"/usr/bin/pkexec", "/usr/bin/telemctl", "opt-in", NULL};
-+      if (!tm_capture_command_output_async(self, tm_telemctl_watch_func, argv))
-+        tm_show_error_dialog (self, _("Failed to opt-in to telemetry"), NULL);
++      /* Telemetry needs two steps to be enabled: "opt-in" followed by "start" */
++      char *output;
++      gint exit_status;
++      exit_status = tm_capture_command_output_sync (self, "/usr/bin/pkexec /usr/bin/telemctl opt-in", &output);
++      if (exit_status == 0)
++        {
++        static const gchar *argv1[]  = {"/usr/bin/pkexec", "/usr/bin/telemctl", "start", NULL};
++        if (!tm_capture_command_output_async(self, tm_telemctl_opt_in_cb, argv1))
++          tm_show_error_dialog (self, _("Failed to start telemetry services"), NULL);
++        }
 +      }
 +    else
 +      {
++      /* "opt-out will disable the whole telemetry reporting */
 +      static const gchar *argv[] = {"/usr/bin/pkexec", "/usr/bin/telemctl", "opt-out", NULL};
-+      if (!tm_capture_command_output_async(self, tm_telemctl_watch_func, argv))
++      if (!tm_capture_command_output_async(self, tm_telemctl_opt_in_cb, argv))
 +        tm_show_error_dialog (self, _("Failed to opt-out of telemetry"), NULL);
 +      }
 +    }
-+
++done:
 +  tm_set_label (self);
 +  return TRUE;
 +}
++
++static gboolean
++tm_telemctl_is_active (CcPrivacyPanel *self)
++{
++  gboolean result;
++  char *output;
++  gint exit_status;
++
++  exit_status = tm_capture_command_output_sync(self, "/usr/bin/telemctl is-active", &output);
++  if (exit_status == 0 && output != NULL)
++    {
++    if (strstr(output, "telemprobd : active") && strstr(output, "telempostd : active"))
++      return TRUE;
++    }
++  return FALSE;
++}
++
 +
 +static void
 +add_telemetry (CcPrivacyPanel *self)
@@ -374,7 +436,7 @@ index f30669add..645d939e7 100644
  static void
  abrt_appeared_cb (GDBusConnection *connection,
                    const gchar     *name,
-@@ -1329,6 +1619,7 @@ cc_privacy_panel_finalize (GObject *object)
+@@ -1329,6 +1681,7 @@ cc_privacy_panel_finalize (GObject *object)
    g_clear_pointer ((GtkWidget **)&self->trash_dialog, gtk_widget_destroy);
    g_clear_pointer ((GtkWidget **)&self->software_dialog, gtk_widget_destroy);
    g_clear_pointer ((GtkWidget **)&self->abrt_dialog, gtk_widget_destroy);
@@ -382,7 +444,7 @@ index f30669add..645d939e7 100644
    g_clear_object (&self->lockdown_settings);
    g_clear_object (&self->lock_settings);
    g_clear_object (&self->privacy_settings);
-@@ -1401,6 +1692,7 @@ cc_privacy_panel_init (CcPrivacyPanel *self)
+@@ -1401,6 +1754,7 @@ cc_privacy_panel_init (CcPrivacyPanel *self)
    add_trash_temp (self);
    add_software (self);
    add_abrt (self);
@@ -390,7 +452,7 @@ index f30669add..645d939e7 100644
  
    g_signal_connect (self->lockdown_settings, "changed",
                      G_CALLBACK (on_lockdown_settings_changed), self);
-@@ -1424,6 +1716,14 @@ cc_privacy_panel_class_init (CcPrivacyPanelClass *klass)
+@@ -1424,6 +1778,14 @@ cc_privacy_panel_class_init (CcPrivacyPanelClass *klass)
    gtk_widget_class_bind_template_child (widget_class, CcPrivacyPanel, abrt_explanation_label);
    gtk_widget_class_bind_template_child (widget_class, CcPrivacyPanel, abrt_policy_link_label);
    gtk_widget_class_bind_template_child (widget_class, CcPrivacyPanel, abrt_switch);
@@ -406,7 +468,7 @@ index f30669add..645d939e7 100644
    gtk_widget_class_bind_template_child (widget_class, CcPrivacyPanel, clear_recent_button);
    gtk_widget_class_bind_template_child (widget_class, CcPrivacyPanel, empty_trash_button);
 diff --git a/panels/privacy/cc-privacy-panel.ui b/panels/privacy/cc-privacy-panel.ui
-index c043116a7..d6ba94657 100644
+index 696d7bfe8..acc880c73 100644
 --- a/panels/privacy/cc-privacy-panel.ui
 +++ b/panels/privacy/cc-privacy-panel.ui
 @@ -1269,4 +1269,160 @@ All the information we collect is made anonymous, and we will never share your d
@@ -571,5 +633,5 @@ index c043116a7..d6ba94657 100644
 +
  </interface>
 -- 
-2.21.0
+2.23.0
 

@@ -4,7 +4,7 @@
 #
 Name     : gnome-control-center
 Version  : 3.34.1
-Release  : 46
+Release  : 48
 URL      : https://download.gnome.org/sources/gnome-control-center/3.34/gnome-control-center-3.34.1.tar.xz
 Source0  : https://download.gnome.org/sources/gnome-control-center/3.34/gnome-control-center-3.34.1.tar.xz
 Summary  : A library full of GTK widgets for mobile phones
@@ -26,12 +26,15 @@ BuildRequires : docbook-xml
 BuildRequires : e2fsprogs-dev
 BuildRequires : glibc-locale
 BuildRequires : gnutls-dev
+BuildRequires : gsettings-desktop-schemas
 BuildRequires : gsettings-desktop-schemas-dev
 BuildRequires : gsound-dev
 BuildRequires : intltool
 BuildRequires : krb5-dev
+BuildRequires : libcanberra-dev
 BuildRequires : libgtop-dev
 BuildRequires : libhandy-dev
+BuildRequires : libsecret-dev
 BuildRequires : libxslt-bin
 BuildRequires : pkgconfig(accountsservice)
 BuildRequires : pkgconfig(cheese-gtk)
@@ -61,6 +64,7 @@ BuildRequires : pkgconfig(udisks2)
 BuildRequires : pkgconfig(upower-glib)
 BuildRequires : shared-mime-info
 BuildRequires : udisks2-dev
+BuildRequires : upower-dev
 Patch1: Check-country-value.patch
 Patch2: 0001-cc-privacy-add-support-for-telemetry.patch
 
@@ -135,6 +139,7 @@ man components for the gnome-control-center package.
 
 %prep
 %setup -q -n gnome-control-center-3.34.1
+cd %{_builddir}/gnome-control-center-3.34.1
 %patch1 -p1
 %patch2 -p1
 
@@ -143,7 +148,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1570461972
+export SOURCE_DATE_EPOCH=1573585096
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -157,10 +162,10 @@ ninja -v -C builddir
 
 %install
 mkdir -p %{buildroot}/usr/share/package-licenses/gnome-control-center
-cp COPYING %{buildroot}/usr/share/package-licenses/gnome-control-center/COPYING
-cp panels/wacom/calibrator/COPYING %{buildroot}/usr/share/package-licenses/gnome-control-center/panels_wacom_calibrator_COPYING
-cp subprojects/libhandy/COPYING %{buildroot}/usr/share/package-licenses/gnome-control-center/subprojects_libhandy_COPYING
-cp subprojects/libhandy/debian/copyright %{buildroot}/usr/share/package-licenses/gnome-control-center/subprojects_libhandy_debian_copyright
+cp %{_builddir}/gnome-control-center-3.34.1/COPYING %{buildroot}/usr/share/package-licenses/gnome-control-center/13d2034b5ee3cb8d1a076370cf8f0e344a5d0855
+cp %{_builddir}/gnome-control-center-3.34.1/panels/wacom/calibrator/COPYING %{buildroot}/usr/share/package-licenses/gnome-control-center/5dfd8a387b5dd2491e61f9649b1cec0ab059c0dd
+cp %{_builddir}/gnome-control-center-3.34.1/subprojects/libhandy/COPYING %{buildroot}/usr/share/package-licenses/gnome-control-center/01a6b4bf79aca9b556822601186afab86e8c4fbf
+cp %{_builddir}/gnome-control-center-3.34.1/subprojects/libhandy/debian/copyright %{buildroot}/usr/share/package-licenses/gnome-control-center/d295f3a9ec2407b00d9f397ce11fb432ae071dd2
 DESTDIR=%{buildroot} ninja -C builddir install
 %find_lang gnome-control-center-2.0
 %find_lang gnome-control-center-2.0-timezones
@@ -340,10 +345,10 @@ mv %{buildroot}/usr/share/pkgconfig/gnome-keybindings.pc %{buildroot}/usr/lib64/
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/gnome-control-center/COPYING
-/usr/share/package-licenses/gnome-control-center/panels_wacom_calibrator_COPYING
-/usr/share/package-licenses/gnome-control-center/subprojects_libhandy_COPYING
-/usr/share/package-licenses/gnome-control-center/subprojects_libhandy_debian_copyright
+/usr/share/package-licenses/gnome-control-center/01a6b4bf79aca9b556822601186afab86e8c4fbf
+/usr/share/package-licenses/gnome-control-center/13d2034b5ee3cb8d1a076370cf8f0e344a5d0855
+/usr/share/package-licenses/gnome-control-center/5dfd8a387b5dd2491e61f9649b1cec0ab059c0dd
+/usr/share/package-licenses/gnome-control-center/d295f3a9ec2407b00d9f397ce11fb432ae071dd2
 
 %files man
 %defattr(0644,root,root,0755)
