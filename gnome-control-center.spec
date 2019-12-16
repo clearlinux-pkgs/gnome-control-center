@@ -4,7 +4,7 @@
 #
 Name     : gnome-control-center
 Version  : 3.34.2
-Release  : 49
+Release  : 50
 URL      : https://download.gnome.org/sources/gnome-control-center/3.34/gnome-control-center-3.34.2.tar.xz
 Source0  : https://download.gnome.org/sources/gnome-control-center/3.34/gnome-control-center-3.34.2.tar.xz
 Summary  : A library full of GTK widgets for mobile phones
@@ -25,12 +25,16 @@ BuildRequires : cups-dev
 BuildRequires : docbook-xml
 BuildRequires : e2fsprogs-dev
 BuildRequires : glibc-locale
+BuildRequires : gnutls-dev
+BuildRequires : gsettings-desktop-schemas
 BuildRequires : gsettings-desktop-schemas-dev
 BuildRequires : gsound-dev
 BuildRequires : intltool
 BuildRequires : krb5-dev
+BuildRequires : libcanberra-dev
 BuildRequires : libgtop-dev
 BuildRequires : libhandy-dev
+BuildRequires : libsecret-dev
 BuildRequires : libxslt-bin
 BuildRequires : pkgconfig(accountsservice)
 BuildRequires : pkgconfig(cheese-gtk)
@@ -46,8 +50,8 @@ BuildRequires : pkgconfig(ibus-1.0)
 BuildRequires : pkgconfig(ice)
 BuildRequires : pkgconfig(libgtop-2.0)
 BuildRequires : pkgconfig(libhandy-0.0)
-BuildRequires : pkgconfig(libnm-glib)
-BuildRequires : pkgconfig(libnm-gtk)
+BuildRequires : pkgconfig(libnm)
+BuildRequires : pkgconfig(libnma)
 BuildRequires : pkgconfig(libpulse)
 BuildRequires : pkgconfig(libsecret-1)
 BuildRequires : pkgconfig(libsoup-2.4)
@@ -60,6 +64,7 @@ BuildRequires : pkgconfig(udisks2)
 BuildRequires : pkgconfig(upower-glib)
 BuildRequires : shared-mime-info
 BuildRequires : udisks2-dev
+BuildRequires : upower-dev
 Patch1: Check-country-value.patch
 Patch2: 0001-cc-privacy-add-support-for-telemetry.patch
 
@@ -143,7 +148,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1574699378
+export SOURCE_DATE_EPOCH=1576106245
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
