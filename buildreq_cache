@@ -1,10 +1,6 @@
-3.34.2
-gnutls-dev
-gsettings-desktop-schemas
+3.36.1
 gsound-dev
-libcanberra-dev
 libhandy-dev
-libsecret-dev
 pkgconfig(gsound)
 pkgconfig(libhandy-0.0)
 pkgconfig(libnm)
@@ -12,4 +8,3 @@ pkgconfig(libnma)
 pkgconfig(libsecret-1)
 pkgconfig(udisks2)
 udisks2-dev
-upower-dev
