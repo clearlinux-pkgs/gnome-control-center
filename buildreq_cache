@@ -1,8 +1,7 @@
-3.36.2
+3.38.0
 gsound-dev
-libhandy-dev
 pkgconfig(gsound)
-pkgconfig(libhandy-0.0)
+pkgconfig(libhandy-1)
 pkgconfig(libnm)
 pkgconfig(libnma)
 pkgconfig(libsecret-1)
