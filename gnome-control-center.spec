@@ -4,7 +4,7 @@
 #
 Name     : gnome-control-center
 Version  : 3.38.0
-Release  : 53
+Release  : 54
 URL      : https://download.gnome.org/sources/gnome-control-center/3.38/gnome-control-center-3.38.0.tar.xz
 Source0  : https://download.gnome.org/sources/gnome-control-center/3.38/gnome-control-center-3.38.0.tar.xz
 Summary  : A library full of GTK widgets for mobile phones
