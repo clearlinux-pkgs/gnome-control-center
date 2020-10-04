@@ -1,14 +1,22 @@
 # This file contains additional build requirements that did not get
 # picked up automatically. One name per line, no whitespace.
-libgtop-dev
-libxslt-bin
+colord
 colord-gtk-dev
 cups-dev
-krb5-dev
-shared-mime-info
-e2fsprogs-dev
 docbook-xml
-intltool
-colord
+e2fsprogs-dev
 glibc-locale
 gsettings-desktop-schemas-dev
+gsound-dev
+intltool
+krb5-dev
+libgtop-dev
+libxslt-bin
+pkgconfig(gsound)
+pkgconfig(libhandy-1)
+pkgconfig(libnm)
+pkgconfig(libnma)
+pkgconfig(libsecret-1)
+pkgconfig(udisks2)
+shared-mime-info
+udisks2-dev

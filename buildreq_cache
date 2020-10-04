@@ -1,9 +1,0 @@
-3.38.0
-gsound-dev
-pkgconfig(gsound)
-pkgconfig(libhandy-1)
-pkgconfig(libnm)
-pkgconfig(libnma)
-pkgconfig(libsecret-1)
-pkgconfig(udisks2)
-udisks2-dev
