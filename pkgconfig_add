@@ -19,6 +19,6 @@ goa-1.0
 polkit-gobject-1
 upower-glib
 gudev-1.0
-gnome-bluetooth-1.0
+gnome-bluetooth-3.0
 mm-glib
 libwacom

@@ -1,2 +1,5 @@
-41.4
-pkgconfig(gcr-3)
+42.0
+gnutls-dev
+pkgconfig(gcr-base-3)
+pkgconfig(gnutls)
+pkgconfig(libnma-gtk4)
