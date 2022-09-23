@@ -1,46 +1,93 @@
 ================
-Version 42.3
+Version 43.0
 ================
 
 - Updated translations
+
+================
+Version 43.rc
+================
+
+- Fix initial AM/PM label value
+- Remove no longer used icon
+- Select panel only if non-folded when search is canceled
+- Updated translations
+
+Appearance
+- Allow backgrounds to use any image format
+
+Device Security
+- Several UI improvements
 
 Display
-- Use virtual clone modes when mirroring
+- Fix primary monitor selection
 
-Network
-- Prevent crash by disconnecting device.
-- Fix Wi-Fi network with "&" in name not appearing.
-- Fix warning when panel closed.
+Info
+- Improve dark theme support
+
+Keyboard
+- Fix activation of input source toggle button
+- Improve handling of Shift shortcuts
+
+Power
+- Fix blank screen and power button behavior settings
+
+Printers
+- Show empty state after removing last printer
+
+Search
+- Fix Move Up and Move Down actions
+
+Sound
+- Fix sound alert selection
+
+Wacom
+- Better support Wacom Express Key Remote
 
 ================
-Version 42.2
+Version 43.beta
 ================
 
 - Updated translations
 
-Applications
-- Fix Snap permissions support failing to compile
-- Fix CcInfoRow having the wrong parent
-- Fix crash crash when switching between two apps
+Cellular
+- Add WWAN 5G connection support
 
-Background
-- Make sure the size of the light/dark previews are the same
+Device Security
+- Polish failure messages
+- Various style updates
 
-Keyboard
-- Fix crash resetting all keyboard shortcuts
+Display
+- Support privacy screens
 
-Network:
-- Stop freeze when closing wired connection properties with Escape
+Info
+- Show build id in a separate row
 
-Sharing
-- Fix close button on Verify Encryption dialog
-- Turn off RDP gsettings key when turning off RDP
-
-Shell
-- Initialise locale early
+Network
+- Fix VPN empty state
 
 Sound
-- Update theme correctly so other apps respond to change
+- Update default sounds
+
+User Accounts
+- Fix back button not appearing sometimes
+
+================
+Version 43.alpha
+================
+
+- Improved accessibility in various panels
+- New Device Security panel
+- Updated translations
+
+Date & Time
+- Update visual style of the timezone map
+
+Display
+- Various visual improvements
+
+Sound
+- Remove dog barking sounds
 
 ================
 Version 42.1
