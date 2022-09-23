@@ -1,7 +1,6 @@
 # This file contains additional pkgconfig build requirements that did
 # not get picked up automatically. One name per line, no whitespace.
 accountsservice
-cheese-gtk
 colord-gtk
 gnome-bluetooth-3.0
 gnome-desktop-3.0
@@ -15,7 +14,6 @@ libgtop-2.0
 libnm-glib
 libnm-gtk
 libpulse
-libsoup-2.4
 libwacom
 mm-glib
 polkit-gobject-1

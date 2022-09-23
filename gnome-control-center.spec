@@ -4,7 +4,7 @@
 #
 Name     : gnome-control-center
 Version  : 43.0
-Release  : 73
+Release  : 74
 URL      : https://download.gnome.org/sources/gnome-control-center/43/gnome-control-center-43.0.tar.xz
 Source0  : https://download.gnome.org/sources/gnome-control-center/43/gnome-control-center-43.0.tar.xz
 Summary  : Keybindings configuration for GNOME applications
@@ -30,9 +30,9 @@ BuildRequires : gsound-dev
 BuildRequires : intltool
 BuildRequires : krb5-dev
 BuildRequires : libgtop-dev
+BuildRequires : libsoup-dev
 BuildRequires : libxslt-bin
 BuildRequires : pkgconfig(accountsservice)
-BuildRequires : pkgconfig(cheese-gtk)
 BuildRequires : pkgconfig(colord-gtk)
 BuildRequires : pkgconfig(gcr-base-3)
 BuildRequires : pkgconfig(gnome-bluetooth-3.0)
@@ -51,7 +51,6 @@ BuildRequires : pkgconfig(libnm)
 BuildRequires : pkgconfig(libnma)
 BuildRequires : pkgconfig(libpulse)
 BuildRequires : pkgconfig(libsecret-1)
-BuildRequires : pkgconfig(libsoup-2.4)
 BuildRequires : pkgconfig(libwacom)
 BuildRequires : pkgconfig(mm-glib)
 BuildRequires : pkgconfig(polkit-gobject-1)
@@ -134,7 +133,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1663951569
+export SOURCE_DATE_EPOCH=1663974226
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
