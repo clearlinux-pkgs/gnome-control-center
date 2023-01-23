@@ -43,5 +43,5 @@ libsecret-1.so.0
 libsmbclient.so.0
 libudisks2.so.0
 libupower-glib.so.3
-libwacom.so.2
+libwacom.so.9
 libxml2.so.2

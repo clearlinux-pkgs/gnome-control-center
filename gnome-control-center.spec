@@ -4,7 +4,7 @@
 #
 Name     : gnome-control-center
 Version  : 43.2
-Release  : 82
+Release  : 83
 URL      : https://download.gnome.org/sources/gnome-control-center/43/gnome-control-center-43.2.tar.xz
 Source0  : https://download.gnome.org/sources/gnome-control-center/43/gnome-control-center-43.2.tar.xz
 Summary  : Keybindings configuration for GNOME applications
@@ -58,6 +58,9 @@ BuildRequires : pkgconfig(udisks2)
 BuildRequires : pkgconfig(upower-glib)
 BuildRequires : shared-mime-info
 BuildRequires : udisks2-dev
+# Suppress stripping binaries
+%define __strip /bin/true
+%define debug_package %{nil}
 Patch1: Check-country-value.patch
 
 %description
@@ -131,22 +134,22 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1672075204
+export SOURCE_DATE_EPOCH=1674497144
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto "
-export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
-export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
-export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
+export CFLAGS="$CFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
+export FCFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
+export FFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
+export CXXFLAGS="$CXXFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --libdir=lib64 --prefix=/usr --buildtype=plain   builddir
 ninja -v -C builddir
 
 %install
 mkdir -p %{buildroot}/usr/share/package-licenses/gnome-control-center
-cp %{_builddir}/gnome-control-center-%{version}/COPYING %{buildroot}/usr/share/package-licenses/gnome-control-center/13d2034b5ee3cb8d1a076370cf8f0e344a5d0855
-cp %{_builddir}/gnome-control-center-%{version}/panels/wacom/calibrator/COPYING %{buildroot}/usr/share/package-licenses/gnome-control-center/5dfd8a387b5dd2491e61f9649b1cec0ab059c0dd
+cp %{_builddir}/gnome-control-center-%{version}/COPYING %{buildroot}/usr/share/package-licenses/gnome-control-center/13d2034b5ee3cb8d1a076370cf8f0e344a5d0855 || :
+cp %{_builddir}/gnome-control-center-%{version}/panels/wacom/calibrator/COPYING %{buildroot}/usr/share/package-licenses/gnome-control-center/5dfd8a387b5dd2491e61f9649b1cec0ab059c0dd || :
 DESTDIR=%{buildroot} ninja -C builddir install
 %find_lang gnome-control-center-2.0
 %find_lang gnome-control-center-2.0-timezones
