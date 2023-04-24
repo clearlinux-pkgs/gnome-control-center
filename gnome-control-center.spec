@@ -4,10 +4,10 @@
 # Using build pattern: meson
 #
 Name     : gnome-control-center
-Version  : 44.0
-Release  : 89
-URL      : https://download.gnome.org/sources/gnome-control-center/44/gnome-control-center-44.0.tar.xz
-Source0  : https://download.gnome.org/sources/gnome-control-center/44/gnome-control-center-44.0.tar.xz
+Version  : 44.1
+Release  : 90
+URL      : https://download.gnome.org/sources/gnome-control-center/44/gnome-control-center-44.1.tar.xz
+Source0  : https://download.gnome.org/sources/gnome-control-center/44/gnome-control-center-44.1.tar.xz
 Summary  : Keybindings configuration for GNOME applications
 Group    : Development/Tools
 License  : GPL-2.0 MIT
@@ -126,8 +126,8 @@ locales components for the gnome-control-center package.
 
 
 %prep
-%setup -q -n gnome-control-center-44.0
-cd %{_builddir}/gnome-control-center-44.0
+%setup -q -n gnome-control-center-44.1
+cd %{_builddir}/gnome-control-center-44.1
 %patch1 -p1
 
 %build
@@ -135,7 +135,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1680028005
+export SOURCE_DATE_EPOCH=1682358953
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
