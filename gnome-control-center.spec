@@ -5,7 +5,7 @@
 #
 Name     : gnome-control-center
 Version  : 44.2
-Release  : 92
+Release  : 93
 URL      : https://download.gnome.org/sources/gnome-control-center/44/gnome-control-center-44.2.tar.xz
 Source0  : https://download.gnome.org/sources/gnome-control-center/44/gnome-control-center-44.2.tar.xz
 Summary  : Keybindings configuration for GNOME applications
@@ -138,7 +138,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1685122383
+export SOURCE_DATE_EPOCH=1685510909
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
