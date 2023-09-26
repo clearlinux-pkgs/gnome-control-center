@@ -21,3 +21,4 @@ pkgconfig(udisks2)
 shared-mime-info
 udisks2-dev
 libsoup-dev
+setxkbmap

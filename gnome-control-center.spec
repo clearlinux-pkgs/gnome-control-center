@@ -4,10 +4,10 @@
 # Using build pattern: meson
 #
 Name     : gnome-control-center
-Version  : 44.3
-Release  : 95
-URL      : https://download.gnome.org/sources/gnome-control-center/44/gnome-control-center-44.3.tar.xz
-Source0  : https://download.gnome.org/sources/gnome-control-center/44/gnome-control-center-44.3.tar.xz
+Version  : 45.0
+Release  : 96
+URL      : https://download.gnome.org/sources/gnome-control-center/45/gnome-control-center-45.0.tar.xz
+Source0  : https://download.gnome.org/sources/gnome-control-center/45/gnome-control-center-45.0.tar.xz
 Summary  : Keybindings configuration for GNOME applications
 Group    : Development/Tools
 License  : GPL-2.0 MIT
@@ -55,8 +55,10 @@ BuildRequires : pkgconfig(mm-glib)
 BuildRequires : pkgconfig(polkit-gobject-1)
 BuildRequires : pkgconfig(pwquality)
 BuildRequires : pkgconfig(smbclient)
+BuildRequires : pkgconfig(tecla)
 BuildRequires : pkgconfig(udisks2)
 BuildRequires : pkgconfig(upower-glib)
+BuildRequires : setxkbmap
 BuildRequires : shared-mime-info
 BuildRequires : udisks2-dev
 # Suppress stripping binaries
@@ -126,11 +128,11 @@ locales components for the gnome-control-center package.
 
 
 %prep
-%setup -q -n gnome-control-center-44.3
-cd %{_builddir}/gnome-control-center-44.3
+%setup -q -n gnome-control-center-45.0
+cd %{_builddir}/gnome-control-center-45.0
 %patch -P 1 -p1
 pushd ..
-cp -a gnome-control-center-44.3 buildavx2
+cp -a gnome-control-center-45.0 buildavx2
 popd
 
 %build
@@ -138,7 +140,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1688408801
+export SOURCE_DATE_EPOCH=1695739090
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -179,17 +181,12 @@ mv %{buildroot}/usr/share/pkgconfig/gnome-keybindings.pc %{buildroot}/usr/lib64/
 /usr/share/applications/gnome-applications-panel.desktop
 /usr/share/applications/gnome-background-panel.desktop
 /usr/share/applications/gnome-bluetooth-panel.desktop
-/usr/share/applications/gnome-camera-panel.desktop
 /usr/share/applications/gnome-color-panel.desktop
 /usr/share/applications/gnome-datetime-panel.desktop
 /usr/share/applications/gnome-default-apps-panel.desktop
-/usr/share/applications/gnome-diagnostics-panel.desktop
 /usr/share/applications/gnome-display-panel.desktop
-/usr/share/applications/gnome-firmware-security-panel.desktop
 /usr/share/applications/gnome-info-overview-panel.desktop
 /usr/share/applications/gnome-keyboard-panel.desktop
-/usr/share/applications/gnome-location-panel.desktop
-/usr/share/applications/gnome-microphone-panel.desktop
 /usr/share/applications/gnome-mouse-panel.desktop
 /usr/share/applications/gnome-multitasking-panel.desktop
 /usr/share/applications/gnome-network-panel.desktop
@@ -197,15 +194,13 @@ mv %{buildroot}/usr/share/pkgconfig/gnome-keybindings.pc %{buildroot}/usr/lib64/
 /usr/share/applications/gnome-online-accounts-panel.desktop
 /usr/share/applications/gnome-power-panel.desktop
 /usr/share/applications/gnome-printers-panel.desktop
+/usr/share/applications/gnome-privacy-panel.desktop
 /usr/share/applications/gnome-region-panel.desktop
 /usr/share/applications/gnome-removable-media-panel.desktop
-/usr/share/applications/gnome-screen-panel.desktop
 /usr/share/applications/gnome-search-panel.desktop
 /usr/share/applications/gnome-sharing-panel.desktop
 /usr/share/applications/gnome-sound-panel.desktop
-/usr/share/applications/gnome-thunderbolt-panel.desktop
 /usr/share/applications/gnome-universal-access-panel.desktop
-/usr/share/applications/gnome-usage-panel.desktop
 /usr/share/applications/gnome-user-accounts-panel.desktop
 /usr/share/applications/gnome-wacom-panel.desktop
 /usr/share/applications/gnome-wifi-panel.desktop
@@ -233,15 +228,10 @@ mv %{buildroot}/usr/share/pkgconfig/gnome-keybindings.pc %{buildroot}/usr/lib64/
 /usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-appearance-symbolic.svg
 /usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-applications-symbolic.svg
 /usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-bluetooth-symbolic.svg
-/usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-camera-symbolic.svg
 /usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-color-symbolic.svg
 /usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-default-apps-symbolic.svg
-/usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-diagnostics-symbolic.svg
 /usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-display-symbolic.svg
-/usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-file-history-symbolic.svg
 /usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-keyboard-symbolic.svg
-/usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-location-symbolic.svg
-/usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-microphone-symbolic.svg
 /usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-mobile-network-symbolic.svg
 /usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-mouse-symbolic.svg
 /usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-multitasking-symbolic.svg
@@ -250,13 +240,12 @@ mv %{buildroot}/usr/share/pkgconfig/gnome-keybindings.pc %{buildroot}/usr/lib64/
 /usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-online-accounts-symbolic.svg
 /usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-power-symbolic.svg
 /usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-printers-symbolic.svg
+/usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-privacy-symbolic.svg
 /usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-region-symbolic.svg
 /usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-removable-media-symbolic.svg
 /usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-search-symbolic.svg
 /usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-sharing-symbolic.svg
 /usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-sound-symbolic.svg
-/usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-system-lock-screen-symbolic.svg
-/usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-thunderbolt-symbolic.svg
 /usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-time-symbolic.svg
 /usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-users-symbolic.svg
 /usr/share/icons/hicolor/scalable/apps/org.gnome.Settings-wacom-symbolic.svg
