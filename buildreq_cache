@@ -1,3 +1,4 @@
-45.3
-pkgconfig(gcr-base-3)
+46.0
+gnome-online-accounts-dev
+pkgconfig(gcr-4)
 pkgconfig(tecla)
