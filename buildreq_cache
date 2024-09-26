@@ -1,4 +1,5 @@
 47.0.1
 gnome-online-accounts-dev
+pkgconfig(gcr-4)
 pkgconfig(libadwaita-1)
 pkgconfig(tecla)
