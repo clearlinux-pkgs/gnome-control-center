@@ -6,10 +6,10 @@
 # autospec commit: f35655a
 #
 Name     : gnome-control-center
-Version  : 47.1
-Release  : 109
-URL      : https://download.gnome.org/sources/gnome-control-center/47/gnome-control-center-47.1.tar.xz
-Source0  : https://download.gnome.org/sources/gnome-control-center/47/gnome-control-center-47.1.tar.xz
+Version  : 47.1.1
+Release  : 110
+URL      : https://download.gnome.org/sources/gnome-control-center/47/gnome-control-center-47.1.1.tar.xz
+Source0  : https://download.gnome.org/sources/gnome-control-center/47/gnome-control-center-47.1.1.tar.xz
 Summary  : Keybindings configuration for GNOME applications
 Group    : Development/Tools
 License  : GPL-2.0 MIT
@@ -130,11 +130,11 @@ locales components for the gnome-control-center package.
 
 
 %prep
-%setup -q -n gnome-control-center-47.1
-cd %{_builddir}/gnome-control-center-47.1
+%setup -q -n gnome-control-center-47.1.1
+cd %{_builddir}/gnome-control-center-47.1.1
 %patch -P 1 -p1
 pushd ..
-cp -a gnome-control-center-47.1 buildavx2
+cp -a gnome-control-center-47.1.1 buildavx2
 popd
 
 %build
@@ -142,7 +142,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1729529633
+export SOURCE_DATE_EPOCH=1729636593
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
