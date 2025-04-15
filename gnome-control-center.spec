@@ -6,10 +6,10 @@
 # autospec commit: a88ffdc
 #
 Name     : gnome-control-center
-Version  : 48.0
-Release  : 114
-URL      : https://download.gnome.org/sources/gnome-control-center/48/gnome-control-center-48.0.tar.xz
-Source0  : https://download.gnome.org/sources/gnome-control-center/48/gnome-control-center-48.0.tar.xz
+Version  : 48.1
+Release  : 115
+URL      : https://download.gnome.org/sources/gnome-control-center/48/gnome-control-center-48.1.tar.xz
+Source0  : https://download.gnome.org/sources/gnome-control-center/48/gnome-control-center-48.1.tar.xz
 Summary  : Keybindings configuration for GNOME applications
 Group    : Development/Tools
 License  : GPL-2.0 MIT
@@ -63,7 +63,6 @@ BuildRequires : pkgconfig(upower-glib)
 BuildRequires : setxkbmap
 BuildRequires : shared-mime-info
 BuildRequires : udisks2-dev
-BuildRequires : upower-dev
 # Suppress stripping binaries
 %define __strip /bin/true
 %define debug_package %{nil}
@@ -131,11 +130,11 @@ locales components for the gnome-control-center package.
 
 
 %prep
-%setup -q -n gnome-control-center-48.0
-cd %{_builddir}/gnome-control-center-48.0
+%setup -q -n gnome-control-center-48.1
+cd %{_builddir}/gnome-control-center-48.1
 %patch -P 1 -p1
 pushd ..
-cp -a gnome-control-center-48.0 buildavx2
+cp -a gnome-control-center-48.1 buildavx2
 popd
 
 %build
@@ -143,7 +142,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1744144214
+export SOURCE_DATE_EPOCH=1744727161
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
