@@ -7,7 +7,7 @@
 #
 Name     : gnome-control-center
 Version  : 48.2
-Release  : 117
+Release  : 118
 URL      : https://download.gnome.org/sources/gnome-control-center/48/gnome-control-center-48.2.tar.xz
 Source0  : https://download.gnome.org/sources/gnome-control-center/48/gnome-control-center-48.2.tar.xz
 Summary  : Keybindings configuration for GNOME applications
